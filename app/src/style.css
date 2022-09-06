@@ -36,3 +36,11 @@ nav {
 main {
     width: 100%;
 }
+
+.all-photos-holder {
+    max-width: 100px;
+}
+
+.all-photos-holder > img {
+    width: 100%;
+}
