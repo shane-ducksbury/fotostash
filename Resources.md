@@ -18,3 +18,4 @@ React
 [RXJS in React](https://www.youtube.com/watch?v=Urv82SGIu_0)
 [React Dropzone Tutorial](https://www.youtube.com/watch?v=MAw0lQKqjRA)
 [Upload a file with a progress bar](https://dev.to/jbrocher/react-tips-tricks-uploading-a-file-with-a-progress-bar-3m5p)
+[React Swipeable Views](https://github.com/oliviertassinari/react-swipeable-views)
