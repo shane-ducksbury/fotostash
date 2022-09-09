@@ -11,6 +11,7 @@ const Navigation = (props: Props) => {
     <h1><span className="logo">fotostash</span></h1>
     <Stack>
         <Button component={Link} to="/">All Photos</Button>
+        <Button component={Link} to="/albums">Albums</Button>
         <Button component={Link} to="/upload">Upload</Button>
     </Stack>
   </nav>

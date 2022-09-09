@@ -10,14 +10,7 @@ import { BufferedFile } from 'src/minio-client/file.model';
 @ApiTags('Images')
 @Controller('images')
 export class ImagesController {
-  // Dependency Injection (Really should learn more about this)
   constructor(private imagesService: ImagesService) {}
-
-  // // Empty Get Request
-  // @Get()
-  // getImages(): Image[] {
-  //   return this.imagesService.findAll();
-  // }
 
   // Adding in a get request with query params
   @ApiOkResponse()
@@ -32,10 +25,8 @@ export class ImagesController {
   @Get(':id')
   getImageById(@Param('id') id: string): Image { 
     const image = this.imagesService.findById(id);
-
-    if (!image){
-      throw new NotFoundException();
-    }
+    if (!image)throw new NotFoundException();
+    
     return image;
   }
 

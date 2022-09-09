@@ -12,6 +12,8 @@ Below are a list of resources I used to help build out this project.
 [TypeStack Class Transformer](https://github.com/typestack/class-transformer)
 [Multer Pipe to Omtimize Uploaded Images](https://dev.to/andersonjoseph/nestjs-creating-a-pipe-to-optimize-uploaded-images-5b3h)
 [Integrating Minio with NestJS](https://betterprogramming.pub/upload-and-retrieve-images-by-integrating-minio-with-nestjs-419e4e629b5d)
+[TypeORM Relations Tutorial](https://www.youtube.com/watch?v=rKgZLVgdvAY)
+[TypeORM Many to Many Doco](https://orkhan.gitbook.io/typeorm/docs/many-to-many-relations)
 
 
 React

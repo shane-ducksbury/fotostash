@@ -6,6 +6,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AllPhotos from './views/AllPhotos';
 import Upload from './views/Upload';
 import Navigation from './components/Navigation';
+import Albums from './views/Albums';
+import SingleAlbum from './views/SingleAlbum';
 
 function App() {
   return (
@@ -14,6 +16,8 @@ function App() {
       <Navigation />
         <Routes>
           <Route path="/" element={<AllPhotos />} />
+          <Route path="/albums" element={<Albums />} />
+          <Route path="/albums/:albumId" element={<SingleAlbum />} />
           <Route path="/upload" element={<Upload />}></Route>
         </Routes>
       </BrowserRouter>

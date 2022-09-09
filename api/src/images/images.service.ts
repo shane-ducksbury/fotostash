@@ -27,18 +27,12 @@ export class ImagesService {
         // Example uses spread like below
         const newImage = {id: Date.now(), ...createUserDto};
 
-        // this.images.push(newImage);
-
         return;
     }
 
     async uploadImage(file: BufferedFile): Promise<Image> {
         const newImageUUID = uuidv4();
-
         const fileUrl = await this.minioService.upload(file, newImageUUID);
-
-        console.log(fileUrl)
-
         const newImage = this.imagesRepository.create({id: newImageUUID, name: file.originalname, imageUrl: fileUrl});
 
         return this.imagesRepository.save(newImage);

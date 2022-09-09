@@ -44,6 +44,10 @@ main {
     align-items: center;
 }
 
+.album-image-card {
+    background-color: #f9f9f9;
+}
+
 .album-image-wrapper {
     max-width: 400px;
 }
@@ -82,4 +86,9 @@ img {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.albums-page-wrapper {
+    display: flex;
+    flex-direction: column;
 }

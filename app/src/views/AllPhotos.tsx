@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import Modal from '@mui/material/Modal';
-import AlbumImagePreview from '../components/AlbumImagePreview';
+import { Modal } from '@mui/material';
 import AlbumLightbox from '../components/AlbumLightbox';
 
 import Image from '../interfaces/Image'
+import AlbumPreviewCard from '../components/AlbumPreviewCard';
 
 type Props = {}
-
-
 
 const AllPhotos = (props: Props) => {
 
@@ -40,9 +38,7 @@ const AllPhotos = (props: Props) => {
                 {allPhotos ? 
                 allPhotos.map((item: Image) => { 
                     return(
-                        <div key={item.id} onClick={() => handleModalOpen(item)}>
-                            <AlbumImagePreview image={item} />
-                        </div>
+                        <AlbumPreviewCard key={item.id} image={item} modalHandler={handleModalOpen} />
                         ) 
                 }) 
                 : `<h1>No Data</h1>`}
