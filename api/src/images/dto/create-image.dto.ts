@@ -5,6 +5,5 @@ import { IsAlphanumeric } from 'class-validator'
 
 export class CreateImageDto {
     @ApiProperty()
-    @IsAlphanumeric()
     name: string;
 }

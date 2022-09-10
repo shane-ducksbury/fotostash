@@ -17,6 +17,9 @@ export class Image {
     @Column()
     imageUrl: string;
 
+    @Column()
+    deleted: boolean;
+
     @ManyToMany(() => Album, (album) => album.images)
     albums: Album[]
 }
