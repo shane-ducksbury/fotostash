@@ -4,8 +4,11 @@ import AlbumLightbox from '../components/AlbumLightbox';
 
 import Image from '../interfaces/Image'
 import AlbumPreviewCard from '../components/AlbumPreviewCard';
+import axios from 'axios';
 
 type Props = {}
+
+const API_ENDPOINT = "http://localhost:5050"
 
 const AllPhotos = (props: Props) => {
 
@@ -15,11 +18,19 @@ const AllPhotos = (props: Props) => {
         id: "null", name: "null", imageUrl: "null"
     });
 
+    const [rerender, setRerender] = useState<boolean>(true);
+
     useEffect(() => {
-        fetch('http://localhost:5050/images')
-        .then(res => res.json())
-        .then(data => setAllPhotos(data)) 
-    }, [])
+        if(rerender){
+            axios.get(API_ENDPOINT + "/images")
+            .then(response => setAllPhotos(response.data))
+            setRerender(false)
+        }
+    }, [rerender])
+
+    const rerenderPage = () => {
+        setRerender(true);
+    }
 
     const handleModalOpen = (image: Image) => {
         setModalOpen(true);
@@ -38,7 +49,7 @@ const AllPhotos = (props: Props) => {
                 {allPhotos ? 
                 allPhotos.map((item: Image) => { 
                     return(
-                        <AlbumPreviewCard key={item.id} image={item} modalHandler={handleModalOpen} />
+                        <AlbumPreviewCard key={item.id} image={item} modalHandler={handleModalOpen} rerenderHandler={rerenderPage} />
                         ) 
                 }) 
                 : `<h1>No Data</h1>`}

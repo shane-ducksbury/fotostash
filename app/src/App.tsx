@@ -8,6 +8,7 @@ import Upload from './views/Upload';
 import Navigation from './components/Navigation';
 import Albums from './views/Albums';
 import SingleAlbum from './views/SingleAlbum';
+import Trash from './views/Trash';
 
 function App() {
   return (
@@ -18,7 +19,8 @@ function App() {
           <Route path="/" element={<AllPhotos />} />
           <Route path="/albums" element={<Albums />} />
           <Route path="/albums/:albumId" element={<SingleAlbum />} />
-          <Route path="/upload" element={<Upload />}></Route>
+          <Route path="/upload" element={<Upload />} />
+          <Route path="/trash" element={<Trash />} />
         </Routes>
       </BrowserRouter>
     </div>

@@ -13,6 +13,7 @@ const Navigation = (props: Props) => {
         <Button component={Link} to="/">All Photos</Button>
         <Button component={Link} to="/albums">Albums</Button>
         <Button component={Link} to="/upload">Upload</Button>
+        <Button component={Link} to="/trash">Trash</Button>
     </Stack>
   </nav>
   )
