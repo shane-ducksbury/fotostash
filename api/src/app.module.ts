@@ -9,18 +9,20 @@ import { MinioClientModule } from './minio-client/minio-client.module';
 import config from 'ormconfig';
 import { ConfigModule } from '@nestjs/config';
 import { AlbumsModule } from './albums/albums.module';
-import { Album } from './albums/entities/album.entity';
-import { Image } from './images/entities/image.entity'
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   controllers: [AppController],
   providers: [AppService],
   imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
     ImagesModule,
     TypeOrmModule.forRoot(config),
     MinioClientModule,
-    ConfigModule.forRoot({ isGlobal: true }),
-    AlbumsModule
+    AlbumsModule,
+    UsersModule,
+    AuthModule
   ],
 })
 export class AppModule {}

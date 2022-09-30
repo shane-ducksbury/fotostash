@@ -9,6 +9,7 @@ import Navigation from './components/Navigation';
 import Albums from './views/Albums';
 import SingleAlbum from './views/SingleAlbum';
 import Trash from './views/Trash';
+import Login from './views/Login';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/albums/:albumId" element={<SingleAlbum />} />
           <Route path="/upload" element={<Upload />} />
           <Route path="/trash" element={<Trash />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </BrowserRouter>
     </div>
