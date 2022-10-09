@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpStatus, NotFoundException, Param, Patch, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Request, NotFoundException, Param, Patch, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags, ApiCreatedResponse, ApiOkResponse, ApiNotFoundResponse } from '@nestjs/swagger'
 
@@ -7,6 +7,7 @@ import { Image } from './entities/image.entity'
 import { ImagesService } from './images.service';
 import { BufferedFile } from 'src/minio-client/file.model';
 import { UpdateImageDto } from './dto/update-image.dto';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @ApiTags('Images')
 @Controller('images')
@@ -14,45 +15,51 @@ export class ImagesController {
   constructor(private imagesService: ImagesService) {}
 
   @ApiOkResponse()
+  @UseGuards(JwtAuthGuard)
   @Get()
-  getImages(): Promise<Image[]> {
-    return this.imagesService.getAll();
+  getImages(@Request() req): Promise<Image[]> {
+    return this.imagesService.getAll(req.user.id);
   }
 
   @ApiOkResponse()
+  @UseGuards(JwtAuthGuard)
   @Get('/trash')
-  getTrashedImages(): Promise<Image[]> {
-    return this.imagesService.getTrash();
+  getTrashedImages(@Request() req): Promise<Image[]> {
+    return this.imagesService.getTrash(req.user.id);
   }
 
   @ApiOkResponse({ type: Image, description: 'The Image'})
   @ApiNotFoundResponse()
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
-  getImageById(@Param('id') id: string): Promise<Image> { 
-    return this.imagesService.getById(id);    
+  getImageById(@Param('id') id: string, @Request() req): Promise<Image> { 
+    return this.imagesService.getById(id, req.user.id);    
   }
 
   @ApiOkResponse()
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  updateImageDetails(@Param('id') id: string, @Body() body: UpdateImageDto): Promise<Image> {
-    return this.imagesService.updateImage(id, body);
+  updateImageDetails(@Param('id') id: string, @Body() body: UpdateImageDto, @Request() req): Promise<Image> {
+    return this.imagesService.updateImage(id, body, req.user.id);
   }
 
-  @ApiCreatedResponse({type: Image})
-  @Post()
-  createImage(@Body() body: CreateImageDto): Image {
-    return this.imagesService.createImage(body);
-  }
+  // @ApiCreatedResponse({type: Image})
+  // @Post()
+  // createImage(@Body() body: CreateImageDto): Image {
+  //   return this.imagesService.createImage(body);
+  // }
 
   @Delete('/trash')
-  emptyTrash() {
-    this.imagesService.emptyTrash();
+  @UseGuards(JwtAuthGuard)
+  emptyTrash(@Request() req) {
+    this.imagesService.emptyTrash(req.user.id);
   }
 
   @ApiCreatedResponse()
+  @UseGuards(JwtAuthGuard)
   @Post('/upload')
   @UseInterceptors(FileInterceptor('file'))
-  uploadImage(@UploadedFile() file: BufferedFile): any {
-    return this.imagesService.uploadImage(file);
+  uploadImage(@UploadedFile() file: BufferedFile, @Request() req): any {
+    return this.imagesService.uploadImage(file, req.user.id);
   }
 }

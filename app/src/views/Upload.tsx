@@ -29,14 +29,12 @@ const Upload: React.FunctionComponent = (props: Props) => {
       onUploadProgress: (progressEvent: ProgressEvent) => {
         // This is ready for the upload progress thing
         const progress = (progressEvent.loaded / progressEvent.total) * 50
-        console.log(progress)
         setUploadProgress(progress)
       }
     })
 
     setFormValues({image: null})
 
-    console.log(response)
     return response.data
   }
 

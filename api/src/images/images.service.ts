@@ -16,32 +16,35 @@ export class ImagesService {
         private minioService: MinioClientService
     ){}
 
-    getAll(): Promise<Image[]> {
-        return this.imagesRepository.find({
-            where: {
-                deleted: false
-            }
-        });
+    getAll(userId: string): Promise<Image[]> {
+        return this.imagesRepository
+        .createQueryBuilder('image')
+        .where('imageOwnerId = :id AND deleted = false', { id: userId })
+        .getMany()
     }
 
-    async getById(imageId: string): Promise<Image> {
-        const image = await this.imagesRepository.findOne({
-            where: {
-                id: imageId
-                }
-        })
-            
+    async getById(imageId: string, userId: string): Promise<Image> {
+        // const image = await this.imagesRepository.findOne({
+        //     where: {
+        //         id: imageId
+        //         }
+        // })
+        const image = 
+        await this.imagesRepository
+            .createQueryBuilder('image')
+            .where('id = :imageId and imageOwnerId = :userId', {imageId: imageId, userId: userId})
+            .getOne()
+
         if (!image)throw new NotFoundException();
 
         return image;
     }
 
-    getTrash(): Promise<Image[]> {
-        return this.imagesRepository.find({
-            where: {
-                deleted: true
-            }
-        })
+    getTrash(userId: string): Promise<Image[]> {
+        return this.imagesRepository
+        .createQueryBuilder('image')
+        .where('deleted = true and imageOwnerId = :userId', {userId: userId})
+        .getMany()
     }
 
     createImage(createUserDto: CreateImageDto): any {
@@ -50,8 +53,8 @@ export class ImagesService {
         return;
     }
 
-    async updateImage(imageId: string, updateImageDto: UpdateImageDto): Promise<Image> {
-        const image: Image = await this.getById(imageId);
+    async updateImage(imageId: string, updateImageDto: UpdateImageDto, userId: string): Promise<Image> {
+        const image: Image = await this.getById(imageId, userId);
 
         if (!image) throw new NotFoundException();
         if (image.name !== updateImageDto.name) image.name = updateImageDto.name;
@@ -73,18 +76,24 @@ export class ImagesService {
         .execute()
     }
 
-    async emptyTrash(): Promise<HttpStatus.NO_CONTENT> {
-        const trashedImages = await this.getTrash();
+    async emptyTrash(userId: string): Promise<HttpStatus.NO_CONTENT> {
+        const trashedImages = await this.getTrash(userId);
 
         if (trashedImages) trashedImages.forEach(image => this.deleteImage(image.id))
 
         return HttpStatus.NO_CONTENT
     }
 
-    async uploadImage(file: BufferedFile): Promise<Image> {
+    async uploadImage(file: BufferedFile, userId: string): Promise<Image> {
         const newImageUUID = uuidv4();
         const fileUrl = await this.minioService.upload(file, newImageUUID);
-        const newImage = this.imagesRepository.create({id: newImageUUID, name: file.originalname, imageUrl: "http://" + fileUrl, deleted: false});
+        const newImage = this.imagesRepository.create({
+            id: newImageUUID,
+            name: file.originalname,
+            imageUrl: "http://" + fileUrl,
+            deleted: false,
+            imageOwnerId: userId
+        });
 
         return this.imagesRepository.save(newImage);
     }

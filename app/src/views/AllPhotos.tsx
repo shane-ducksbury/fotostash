@@ -5,6 +5,7 @@ import AlbumLightbox from '../components/AlbumLightbox';
 import Image from '../interfaces/Image'
 import AlbumPreviewCard from '../components/AlbumPreviewCard';
 import axios from 'axios';
+import UserService from '../services/UserService';
 
 type Props = {}
 
@@ -22,11 +23,15 @@ const AllPhotos = (props: Props) => {
 
     useEffect(() => {
         if(rerender){
-            axios.get(API_ENDPOINT + "/images")
-            .then(response => setAllPhotos(response.data))
+            getUserPhotos();
             setRerender(false)
         }
     }, [rerender])
+
+    const getUserPhotos = async () => {
+        const userImages = await UserService.getUserImages()
+        setAllPhotos(userImages)
+    }
 
     const rerenderPage = () => {
         setRerender(true);

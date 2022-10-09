@@ -22,3 +22,5 @@ Below are a list of resources I used to help build out this project.
 [React Dropzone Tutorial](https://www.youtube.com/watch?v=MAw0lQKqjRA)
 [Upload a file with a progress bar](https://dev.to/jbrocher/react-tips-tricks-uploading-a-file-with-a-progress-bar-3m5p)
 [React Swipeable Views](https://github.com/oliviertassinari/react-swipeable-views)
+[Custom API Service with Hooks](https://www.bezkoder.com/react-hooks-jwt-auth/#Create_React_Pages_for_Authentication)
+[Material UI and react-hook-form](https://blog.logrocket.com/using-material-ui-with-react-hook-form/)

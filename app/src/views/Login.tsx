@@ -1,31 +1,38 @@
-import { Button, Paper, TextField } from '@mui/material';
+import { Alert, AlertTitle, Button, Paper, TextField } from '@mui/material';
 import axios from 'axios';
-import React from 'react'
+import React, { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form';
+import { Navigate } from 'react-router-dom';
 import { FormInputText } from '../components/FormInputText';
+import AuthService from '../services/AuthService';
 
-type Props = {}
-
-const { REACT_APP_API_URL } = process.env
-
-const Login = (props: Props) => {
+const Login = () => {
 
     const { handleSubmit, reset, control } = useForm();
+    const [loginInvalid, setLoginInvalid] = useState<boolean>(false);
+    const [validLogin, setValidLogin] = useState<boolean>(false);
+
     const onSubmit = (data: any) => {
-        axios.post(
-            `${REACT_APP_API_URL}/auth/login`,
-            data
-            )
+        setLoginInvalid(false);
+        AuthService.login(data)
         .then(res => {
-            if(res.status === 201) console.log(res.data)
+            if(res.status === 201) setValidLogin(true);
         })
         .catch(err => {
-            console.log(err)
+            if(err.response.status === 401) setLoginInvalid(true);
         })
     }
   
     return (
+        <>
+        {validLogin ? <Navigate to='/' /> : null}
         <div className='login-form'>
+            {loginInvalid ?
+            <Alert severity="error">
+                <AlertTitle>Error</AlertTitle>
+                Username or Password is Incorrect
+            </Alert>
+            : null}
             <form>
             <FormInputText 
                     name={"username"}
@@ -42,6 +49,7 @@ const Login = (props: Props) => {
             <Button onClick={() => reset()} variant={"outlined"}>Reset</Button>
             </form>
         </div>
+        </>
     );
 }
 
