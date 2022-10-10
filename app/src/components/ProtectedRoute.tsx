@@ -3,13 +3,13 @@ import { Navigate, Outlet } from 'react-router-dom';
 
 type Props = {
     user: any;
-    redirectPath: string;
-    children: any;
+    redirectPath?: string;
+    children?: any;
 }
 
 const ProtectedRoute = ({ 
         user, 
-        redirectPath = '/',
+        redirectPath = '/login',
         children
     }: Props) => {
         if(!user){

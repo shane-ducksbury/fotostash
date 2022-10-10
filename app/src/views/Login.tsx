@@ -6,7 +6,11 @@ import { Navigate } from 'react-router-dom';
 import { FormInputText } from '../components/FormInputText';
 import AuthService from '../services/AuthService';
 
-const Login = () => {
+type Props = {
+    validateUser: () => void;
+}
+
+const Login = ({ validateUser }: Props) => {
 
     const { handleSubmit, reset, control } = useForm();
     const [loginInvalid, setLoginInvalid] = useState<boolean>(false);
@@ -17,6 +21,7 @@ const Login = () => {
         AuthService.login(data)
         .then(res => {
             if(res.status === 201) setValidLogin(true);
+            validateUser();
         })
         .catch(err => {
             if(err.response.status === 401) setLoginInvalid(true);

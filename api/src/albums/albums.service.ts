@@ -40,7 +40,7 @@ export class AlbumsService {
     const album: Album = 
     await this.albumsRepository
     .createQueryBuilder('album')
-    .where('album.id = :albumId AND album.albumOwnerId = :userId AND deleted = false', {albumId: albumId, userId: userId})
+    .where('album.id = :albumId AND album.albumOwnerId = :userId', {albumId: albumId, userId: userId})
     .leftJoinAndSelect('album.images', 'images')
     .getOne()
 

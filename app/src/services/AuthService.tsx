@@ -1,20 +1,29 @@
 import React from 'react'
 import axios, { AxiosResponse } from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const { REACT_APP_API_URL } = process.env
 
 const API_URL = REACT_APP_API_URL
 
 const checkExistingAuth = async () => {
+
     const lsUser = localStorage.getItem('user');
     if(!lsUser) return null;
     if(lsUser){
         const user = JSON.parse(lsUser)
-        axios.defaults.headers.common['Authorization'] = 'Bearer ' + user.access_token;
-        return user;
+        // axios.defaults.headers.common['Authorization'] = 'Bearer ' + user.access_token;
+        // return user;
         // Remove later
 
-        // await axios.get(API_URL + '/auth/validate/', {headers: {Authorization: `Bearer ` + user.access_token}})
+        const res = await axios.get(API_URL + '/auth/validate/', {headers: {Authorization: `Bearer ` + user.access_token}})
+        if(res.status === 200){
+            console.log(res)
+            if(user.access_token){
+                axios.defaults.headers.common['Authorization'] = 'Bearer ' + user.access_token;
+                return user;
+            }
+        }
         // .then(res => {
         //     if(res.status === 200){
         //     if(user.access_token){
@@ -27,12 +36,9 @@ const checkExistingAuth = async () => {
     }
 }
 
-const register = ( username: string, email: string, password:string ) => {
-    return axios.post(API_URL + "signup", {
-        username,
-        email,
-        password,
-    });
+const register = ( data: {email: string, password: string, firstName: string, lastName: string} ) => {
+    console.log(data)
+    return axios.post(`${API_URL}/users/register/`, data);
 };
 
 const login = async (data: {username: string, password: string}) => {
@@ -45,7 +51,8 @@ const login = async (data: {username: string, password: string}) => {
 };
 
 const logout = () => {
-    localStorage.removeItem("user");
+    localStorage.removeItem('user');
+    axios.defaults.headers.common['Authorization'] = false;
 };
 
 const getCurrentUser = () => {

@@ -11,34 +11,47 @@ import SingleAlbum from './views/SingleAlbum';
 import Trash from './views/Trash';
 import Login from './views/Login';
 import AuthService from './services/AuthService';
+import Register from './views/Register';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   const [userValid, setUserValid] = useState<boolean>(false);
+  const [authChecked, setAuthChecked] = useState<boolean>(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    validateUser();
+    if(!userValid){
+      validateUser();
+    }
   },[])
 
   const validateUser = async () => {
     const auth = await AuthService.checkExistingAuth();
-    if(!auth) navigate('/login');
+    console.log(auth)
     if(auth) setUserValid(true);
+    setAuthChecked(true);
   }
 
+  if(authChecked){
   return (
     <div className="App">
       <Navigation />
         <Routes>
-            <Route path="/" element={userValid ? <AllPhotos /> : null} />
-            <Route path="/albums" element={<Albums />} />
-            <Route path="/albums/:albumId" element={<SingleAlbum />} />
-            <Route path="/upload" element={<Upload />} />
-            <Route path="/trash" element={<Trash />} />
-            <Route path="/login" element={<Login />} />
+            <Route path="/" element={<ProtectedRoute user={userValid} />}>
+                <Route path="/" element={<AllPhotos />} />
+                <Route path="/albums" element={<Albums />} />
+                <Route path="/albums/:albumId" element={<SingleAlbum />} />
+                <Route path="/upload" element={<Upload />} />
+                <Route path="/trash" element={<Trash />} />
+            </Route>
+            <Route path="/login" element={<Login validateUser={validateUser} />} />
+            <Route path="/register" element={<Register />} />
         </Routes>
     </div>
   );
+  } else {
+    return(<p>Loading</p>)
+  }
 }
 
 export default App;
