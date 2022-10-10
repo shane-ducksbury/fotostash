@@ -21,10 +21,10 @@ export class Image {
     @Column()
     deleted: boolean;
 
-    @ManyToMany(() => Album, (album) => album.images)
+    @ManyToMany(() => Album, (album) => album.images, { onDelete: 'CASCADE' })
     albums: Album[]
 
-    @ManyToOne(() => User, user => user.id)
+    @ManyToOne(() => User, user => user.id, { onDelete: 'CASCADE' })
     @JoinColumn({name: "imageOwnerId"})
     imageOwnerId: string;
 }

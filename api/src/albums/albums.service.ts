@@ -7,35 +7,42 @@ import { Repository } from 'typeorm';
 import { Album } from './entities/album.entity';
 import { Image } from 'src/images/entities/image.entity';
 import { AddImageToAlbumDto } from './dto/add-image-to-album.dto';
+import { ImagesService } from 'src/images/images.service';
 
 @Injectable()
 export class AlbumsService {
   constructor(
     @InjectRepository(Album) private albumsRepository: Repository<Album>,
-    @InjectRepository(Image) private imagesRepository: Repository<Image>
+    @InjectRepository(Image) private imagesRepository: Repository<Image>,
+    private readonly imagesService: ImagesService
   ){}
 
 
-  create(createAlbumDto: CreateAlbumDto): Promise<Album> {
+  create(createAlbumDto: CreateAlbumDto, userId: string): Promise<Album> {
     const newAlbumUUID = uuidv4();
-    const newAlbum = this.albumsRepository.create({id: newAlbumUUID, name: createAlbumDto.name})
+    const newAlbum = this.albumsRepository.create({
+      id: newAlbumUUID,
+      name: createAlbumDto.name,
+      albumOwnerId: userId
+    })
     
     return this.albumsRepository.save(newAlbum);
   }
 
-  findAll(): Promise<Album[]> {
-    return this.albumsRepository.find();
+  findAll(userId: string): Promise<Album[]> {
+    return this.albumsRepository
+    .createQueryBuilder('album')
+    .where('albumOwnerId = :id', { id: userId })
+    .getMany()
   }
 
-  async findOne(id: string): Promise<Album> {
-    const album: Album = await this.albumsRepository.findOne({
-      relations: {
-        images: true
-      },
-      where: {
-        id: id
-      }
-    });
+  async findOne(albumId: string, userId: string): Promise<Album> {
+    const album: Album = 
+    await this.albumsRepository
+    .createQueryBuilder('album')
+    .where('album.id = :albumId AND album.albumOwnerId = :userId AND deleted = false', {albumId: albumId, userId: userId})
+    .leftJoinAndSelect('album.images', 'images')
+    .getOne()
 
     if(!album) throw new NotFoundException("Album does not exist.");
 
@@ -50,15 +57,11 @@ export class AlbumsService {
     return `This action removes a #${id} album`;
   }
 
-  async addImageToAlbum(albumId: string, addImageToAlbumDto: AddImageToAlbumDto): Promise<Album> {
-    const album: Album = await this.findOne(albumId);
+  async addImageToAlbum(albumId: string, addImageToAlbumDto: AddImageToAlbumDto, userId: string): Promise<Album> {
+    const album: Album = await this.findOne(albumId, userId);
     
     const imageId = addImageToAlbumDto.imageId;
-    const imageToAdd: Image = await this.imagesRepository.findOne({
-      where: {
-        id: imageId
-      }
-    })
+    const imageToAdd: Image = await this.imagesService.getById(imageId, userId);
 
     if (!imageToAdd) throw new NotFoundException("Image does not exist.");
     

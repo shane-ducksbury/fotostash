@@ -12,6 +12,7 @@ import { MinioClientModule } from 'src/minio-client/minio-client.module';
   imports: [
     TypeOrmModule.forFeature([Image]),
     MinioClientModule
-  ]
+  ],
+  exports: [ImagesService]
 })
 export class ImagesModule {}

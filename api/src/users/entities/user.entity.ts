@@ -1,4 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { Album } from "src/albums/entities/album.entity";
 import { Image } from "src/images/entities/image.entity";
 import { Column, Entity, JoinColumn, OneToMany, PrimaryColumn } from "typeorm";
 
@@ -28,4 +29,8 @@ export class User {
     @OneToMany(() => Image, image => image.imageOwnerId)
     @JoinColumn({name: "images"})
     images: Image[];
+
+    @OneToMany(() => Album, album => album.albumOwnerId)
+    @JoinColumn({name: "albums"})
+    albums: Album[];
 }

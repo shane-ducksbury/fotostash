@@ -24,11 +24,6 @@ export class ImagesService {
     }
 
     async getById(imageId: string, userId: string): Promise<Image> {
-        // const image = await this.imagesRepository.findOne({
-        //     where: {
-        //         id: imageId
-        //         }
-        // })
         const image = 
         await this.imagesRepository
             .createQueryBuilder('image')
