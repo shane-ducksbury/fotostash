@@ -12,10 +12,6 @@ const checkExistingAuth = async () => {
     if(!lsUser) return null;
     if(lsUser){
         const user = JSON.parse(lsUser)
-        // axios.defaults.headers.common['Authorization'] = 'Bearer ' + user.access_token;
-        // return user;
-        // Remove later
-
         const res = await axios.get(API_URL + '/auth/validate/', {headers: {Authorization: `Bearer ` + user.access_token}})
         if(res.status === 200){
             console.log(res)
@@ -24,20 +20,10 @@ const checkExistingAuth = async () => {
                 return user;
             }
         }
-        // .then(res => {
-        //     if(res.status === 200){
-        //     if(user.access_token){
-        //         axios.defaults.headers.common['Authorization'] = 'Bearer ' + user.access_token;
-        //         return user;
-        //     }
-        // }})
-        // .catch(res => { return null })
-        // return null;
     }
 }
 
 const register = ( data: {email: string, password: string, firstName: string, lastName: string} ) => {
-    console.log(data)
     return axios.post(`${API_URL}/users/register/`, data);
 };
 
