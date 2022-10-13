@@ -13,6 +13,8 @@ import Login from './views/Login';
 import AuthService from './services/AuthService';
 import Register from './views/Register';
 import ProtectedRoute from './components/ProtectedRoute';
+import DrawerNavigation from './components/DrawerNavigation';
+import Logout from './views/Logout';
 
 const App = () => {
     const [userValid, setUserValid] = useState<boolean>(false);
@@ -20,7 +22,7 @@ const App = () => {
 
     useEffect(() => {
         if(!userValid){
-        validateUser();
+            validateUser();
         }
     },[])
 
@@ -33,18 +35,22 @@ const App = () => {
 
     return (
         <div className="App">
-        <Navigation />
-            <Routes>
-                <Route path="/" element={<ProtectedRoute user={userValid} authChecked={authChecked}/>}>
-                    <Route path="/" element={<AllPhotos />} />
-                    <Route path="/albums" element={<Albums />} />
-                    <Route path="/albums/:albumId" element={<SingleAlbum />} />
-                    <Route path="/upload" element={<Upload />} />
-                    <Route path="/trash" element={<Trash />} />
-                </Route>
-                <Route path="/login" element={<Login validateUser={validateUser} />} />
-                <Route path="/register" element={<Register />} />
-            </Routes>
+        {/* <Navigation /> */}
+        {userValid ? <DrawerNavigation /> : null}
+            <main>
+                <Routes>
+                    <Route path="/" element={<ProtectedRoute user={userValid} authChecked={authChecked}/>}>
+                        <Route path="/" element={<AllPhotos />} />
+                        <Route path="/albums" element={<Albums />} />
+                        <Route path="/albums/:albumId" element={<SingleAlbum />} />
+                        <Route path="/upload" element={<Upload />} />
+                        <Route path="/trash" element={<Trash />} />
+                    </Route>
+                    <Route path="/login" element={<Login validateUser={validateUser} />} />
+                    <Route path="/logout" element={<Logout />}></Route>
+                    <Route path="/register" element={<Register />} />
+                </Routes>
+            </main>
         </div>
     );
 }

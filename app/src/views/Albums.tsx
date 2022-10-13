@@ -10,7 +10,8 @@ type Props = {
 
 }
 
-const API_ENDPOINT = "http://localhost:5050"
+const { REACT_APP_API_URL } = process.env
+const API_URL = REACT_APP_API_URL
 
 const Albums = (props: Props) => {
 
@@ -18,7 +19,7 @@ const Albums = (props: Props) => {
     const [staleAlbums, setStaleAlbums] = useState<boolean>(true);
 
     const getAlbums = () => {
-        return axios.get(API_ENDPOINT + "/albums")
+        return axios.get(`${API_URL}/albums`)
         .then(response => setAlbums(response.data))
     }
 

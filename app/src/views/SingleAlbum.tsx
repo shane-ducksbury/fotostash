@@ -8,7 +8,8 @@ import Image from "../interfaces/Image"
 
 type Props = {}
 
-const API_ENDPOINT = "http://localhost:5050"
+const { REACT_APP_API_URL } = process.env
+const API_URL = REACT_APP_API_URL
 
 const SingleAlbum = (props: Props) => {
 
@@ -17,7 +18,7 @@ const SingleAlbum = (props: Props) => {
     const { albumId } = useParams();
 
     useEffect(() => {
-        axios.get(API_ENDPOINT + "/albums/" + albumId )
+        axios.get(`${API_URL}/albums/${albumId}`)
         .then(response => setAlbumDetails(response.data))
     },[albumId])
 

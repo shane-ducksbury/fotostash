@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Modal } from '@mui/material';
+import { ImageList, ImageListItem, Modal } from '@mui/material';
 import AlbumLightbox from '../components/AlbumLightbox';
 
 import Image from '../interfaces/Image'
 import AlbumPreviewCard from '../components/AlbumPreviewCard';
-import axios from 'axios';
 import UserService from '../services/UserService';
 
 type Props = {}
-
-const API_ENDPOINT = "http://localhost:5050"
 
 const AllPhotos = (props: Props) => {
 
@@ -51,13 +48,23 @@ const AllPhotos = (props: Props) => {
             <h1>All Photos</h1>
             
             <div className='album-wrapper'>
-                {allPhotos ? 
+                <ImageList sx={{ height: '80vh' }} cols={3} rowHeight={350}>
+                    {allPhotos.map((item: Image) => {
+                        return(<ImageListItem onClick={() => handleModalOpen(item)}>
+                            <img src={`${item.imageUrl}?w=164&h=164&fit=crop&auto=format`}
+                                srcSet={`${item.imageUrl}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                                alt='something'
+                                loading="lazy" />
+                        </ImageListItem>)
+                    })}
+                </ImageList>
+                {/* {allPhotos ? 
                 allPhotos.map((item: Image) => { 
                     return(
                         <AlbumPreviewCard key={item.id} image={item} modalHandler={handleModalOpen} rerenderHandler={rerenderPage} />
                         ) 
                 }) 
-                : `<h1>No Data</h1>`}
+                : `<h1>No Data</h1>`} */}
             </div>
 
             <Modal open={modalOpen} onClose={handleModalClose} sx={{justifyContent: "center"}}>

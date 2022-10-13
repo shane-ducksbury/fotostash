@@ -6,7 +6,8 @@ import Image from '../interfaces/Image'
 
 type Props = {}
 
-const API_ENDPOINT = "http://localhost:5050"
+const { REACT_APP_API_URL } = process.env
+const API_URL = REACT_APP_API_URL
 
 const Trash = (props: Props) => {
     const [trashImages, setTrashImages] = useState<Image[]>([])
@@ -15,7 +16,7 @@ const Trash = (props: Props) => {
     useEffect(() => {
         if(rerender){
             setTrashImages([]);
-            axios.get(API_ENDPOINT + "/images/trash")
+            axios.get(`${API_URL}/images/trash`)
             .then(response => setTrashImages(response.data));
 
             setRerender(false);
@@ -32,7 +33,7 @@ const Trash = (props: Props) => {
     }
 
     const emptyTrash = async () => {
-        await axios.delete(API_ENDPOINT + "/images/trash");
+        await axios.delete(`${API_URL}/images/trash`);
     }
 
     return (

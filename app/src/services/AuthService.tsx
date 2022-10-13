@@ -14,12 +14,12 @@ const checkExistingAuth = async () => {
         const user = JSON.parse(lsUser)
         const res = await axios.get(API_URL + '/auth/validate/', {headers: {Authorization: `Bearer ` + user.access_token}})
         if(res.status === 200){
-            console.log(res)
             if(user.access_token){
                 axios.defaults.headers.common['Authorization'] = 'Bearer ' + user.access_token;
                 return user;
             }
         }
+        return null;
     }
 }
 
