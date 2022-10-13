@@ -14,6 +14,7 @@ Below are a list of resources I used to help build out this project.
 [Integrating Minio with NestJS](https://betterprogramming.pub/upload-and-retrieve-images-by-integrating-minio-with-nestjs-419e4e629b5d)
 [TypeORM Relations Tutorial](https://www.youtube.com/watch?v=rKgZLVgdvAY)
 [TypeORM Many to Many Doco](https://orkhan.gitbook.io/typeorm/docs/many-to-many-relations)
+[exifreader](https://www.npmjs.com/package/exifreader)
 
 
 ### React

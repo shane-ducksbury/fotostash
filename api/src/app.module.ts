@@ -11,10 +11,12 @@ import { ConfigModule } from '@nestjs/config';
 import { AlbumsModule } from './albums/albums.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { ImageProcessorService } from './image-processor/image-processor.service';
+import { ImageProcessorModule } from './image-processor/image-processor.module';
 
 @Module({
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, ImageProcessorService],
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     ImagesModule,
@@ -22,7 +24,8 @@ import { AuthModule } from './auth/auth.module';
     MinioClientModule,
     AlbumsModule,
     UsersModule,
-    AuthModule
+    AuthModule,
+    ImageProcessorModule
   ],
 })
 export class AppModule {}

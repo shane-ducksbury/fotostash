@@ -60,6 +60,6 @@ export class ImagesController {
   @Post('/upload')
   @UseInterceptors(FileInterceptor('file'))
   uploadImage(@UploadedFile() file: BufferedFile, @Request() req): any {
-    return this.imagesService.uploadImage(file, req.user.id);
+    return this.imagesService.uploadImage(file, req.file.buffer, req.user.id);
   }
 }

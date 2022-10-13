@@ -8,12 +8,14 @@ import { v4 as uuidv4 } from 'uuid';
 import { MinioClientService } from 'src/minio-client/minio-client.service';
 import { BufferedFile } from 'src/minio-client/file.model';
 import { UpdateImageDto } from './dto/update-image.dto';
+import { ImageProcessorService } from 'src/image-processor/image-processor.service';
 
 @Injectable()
 export class ImagesService {
     constructor(
         @InjectRepository(Image) private imagesRepository: Repository<Image>,
-        private minioService: MinioClientService
+        private minioService: MinioClientService,
+        private imageProcessorModule: ImageProcessorService
     ){}
 
     getAll(userId: string): Promise<Image[]> {
@@ -79,9 +81,11 @@ export class ImagesService {
         return HttpStatus.NO_CONTENT
     }
 
-    async uploadImage(file: BufferedFile, userId: string): Promise<Image> {
+    async uploadImage(file: BufferedFile, fileBuffer: Buffer, userId: string): Promise<Image> {
         const newImageUUID = uuidv4();
         const fileUrl = await this.minioService.upload(file, newImageUUID);
+        const tags = await this.imageProcessorModule.getImageTags(fileBuffer);
+        console.log(tags)
         const newImage = this.imagesRepository.create({
             id: newImageUUID,
             name: file.originalname,
