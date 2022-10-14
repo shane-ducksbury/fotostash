@@ -81,7 +81,7 @@
       LensMake: { id: 42035, value: [Array], description: 'Apple' },
       LensModel: {
         id: 42036,
-        value: [Array],
+        value: [Array],        console.log(tags)
         description: 'iPhone 12 back dual wide camera 4.2mm f/1.6'
       },
       CompositeImage: { id: 42080, value: 2, description: 'General Composite Image' },

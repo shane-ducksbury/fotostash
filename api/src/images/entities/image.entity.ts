@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { Album } from 'src/albums/entities/album.entity';
 import { User } from 'src/users/entities/user.entity';
-import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToOne, PrimaryColumn } from 'typeorm';
+import { ImageInfo } from './image-info.entity';
 
 
 @Entity()
@@ -21,10 +22,17 @@ export class Image {
     @Column()
     deleted: boolean;
 
+    @Column()
+    dateTime: string;
+
     @ManyToMany(() => Album, (album) => album.images, { onDelete: 'CASCADE' })
-    albums: Album[]
+    albums: Album[];
 
     @ManyToOne(() => User, user => user.id, { onDelete: 'CASCADE' })
     @JoinColumn({name: "imageOwnerId"})
     imageOwnerId: string;
+
+    @OneToOne(() => ImageInfo, imageInfo => imageInfo.infoId, { onDelete: 'CASCADE' })
+    @JoinColumn({name: "imageInfo"})
+    imageInfo: string;
 }

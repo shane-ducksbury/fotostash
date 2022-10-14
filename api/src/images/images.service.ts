@@ -9,11 +9,13 @@ import { MinioClientService } from 'src/minio-client/minio-client.service';
 import { BufferedFile } from 'src/minio-client/file.model';
 import { UpdateImageDto } from './dto/update-image.dto';
 import { ImageProcessorService } from 'src/image-processor/image-processor.service';
+import { ImageInfo } from './entities/image-info.entity';
 
 @Injectable()
 export class ImagesService {
     constructor(
         @InjectRepository(Image) private imagesRepository: Repository<Image>,
+        @InjectRepository(ImageInfo) private imageInfoRepository: Repository<ImageInfo>,
         private minioService: MinioClientService,
         private imageProcessorModule: ImageProcessorService
     ){}
@@ -85,15 +87,29 @@ export class ImagesService {
         const newImageUUID = uuidv4();
         const fileUrl = await this.minioService.upload(file, newImageUUID);
         const tags = await this.imageProcessorModule.getImageTags(fileBuffer);
-        console.log(tags)
-        const newImage = this.imagesRepository.create({
-            id: newImageUUID,
-            name: file.originalname,
-            imageUrl: "http://" + fileUrl,
-            deleted: false,
-            imageOwnerId: userId
-        });
-
-        return this.imagesRepository.save(newImage);
+        // console.log(tags)
+        try{
+            const newImageInfo = await this.imageInfoRepository.create({
+                infoId: uuidv4(),
+                imageId: newImageUUID,
+                dateTime: tags.exif.DateTime.description,
+                imageWidth: tags.file['Image Width'].value,
+                imageHeight: tags.file['Image Height'].value
+            })
+            await this.imageInfoRepository.save(newImageInfo);
+            const newImage = this.imagesRepository.create({
+                id: newImageUUID,
+                name: file.originalname,
+                imageUrl: "http://" + fileUrl,
+                dateTime: newImageInfo.dateTime,
+                deleted: false,
+                imageOwnerId: userId,
+                imageInfo: newImageInfo.infoId
+            });
+            return this.imagesRepository.save(newImage);
+        } catch(e){
+            console.log(e)
+        }
+        return null
     }
 }
