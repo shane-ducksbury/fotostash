@@ -15,6 +15,7 @@ import Register from './views/Register';
 import ProtectedRoute from './components/ProtectedRoute';
 import DrawerNavigation from './components/DrawerNavigation';
 import Logout from './views/Logout';
+import MultiFileUpload from './components/MultiFileUpload';
 
 const App = () => {
     const [userValid, setUserValid] = useState<boolean>(false);
@@ -44,6 +45,7 @@ const App = () => {
                         <Route path="/albums" element={<Albums />} />
                         <Route path="/albums/:albumId" element={<SingleAlbum />} />
                         <Route path="/upload" element={<Upload />} />
+                        <Route path="/dev-upload" element={<MultiFileUpload />} />
                         <Route path="/trash" element={<Trash />} />
                     </Route>
                     <Route path="/login" element={<Login validateUser={validateUser} />} />

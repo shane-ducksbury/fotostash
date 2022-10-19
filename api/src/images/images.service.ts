@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository } from 'typeorm';
 import { CreateImageDto } from './dto/create-image.dto';
@@ -87,12 +87,12 @@ export class ImagesService {
         const newImageUUID = uuidv4();
         const fileUrl = await this.minioService.upload(file, newImageUUID);
         const tags = await this.imageProcessorModule.getImageTags(fileBuffer);
-        // console.log(tags)
         try{
             const newImageInfo = await this.imageInfoRepository.create({
                 infoId: uuidv4(),
                 imageId: newImageUUID,
-                dateTime: tags.exif.DateTime.description,
+                dateTime: tags.exif ? tags.exif.DateTime.description : '2022:01:01 0:0:01',
+                // dateTime: tags.exif.DateTime.description, // Use this to cause an upload error for testing
                 imageWidth: tags.file['Image Width'].value,
                 imageHeight: tags.file['Image Height'].value
             })
@@ -108,7 +108,7 @@ export class ImagesService {
             });
             return this.imagesRepository.save(newImage);
         } catch(e){
-            console.log(e)
+            throw new HttpException('The upload failed due to an issue with the database', HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return null
     }

@@ -38,6 +38,7 @@ const DrawerNavigation = (props: DrawerNavigationProps) => {
             <NavButtonWithIcon icon={<IoTrashBin size={'1.5rem'} />} iconText={'Trash'} showIconText={showText} linkLocation={'/trash'} />
             <NavButtonWithIcon icon={<IoSettings size={'1.5rem'} />} iconText={'Account'} showIconText={showText} linkLocation={'/account'} />
             <NavButtonWithIcon icon={<IoLogOut size={'1.5rem'} />} iconText={'Logout'} showIconText={showText} linkLocation={'/logout'} />
+            <NavButtonWithIcon icon={<IoCloudUpload size={'1.5rem'} />} iconText={'WIP Upload'} showIconText={showText} linkLocation={'/dev-upload'} />
             </>
         )
     }

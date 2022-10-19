@@ -155,3 +155,24 @@ img {
 .nav-drawer-desktop svg{
     margin: 0 1.8rem 0 0.2rem;
 }
+
+.dropzone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 90vh;
+    border: 0.6rem dashed #e6e6e6;
+    border-radius: 5px;
+}
+
+.dropzone:hover {
+    background-color: aliceblue;
+    cursor: pointer;
+}
+
+.progress-bar-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
