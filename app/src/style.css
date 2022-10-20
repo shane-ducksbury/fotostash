@@ -57,9 +57,9 @@ main {
     cursor: pointer;
 }
 
-img {
+/* img {
     width: 100%;
-}
+} */
 
 .upload-container {
     display: flex;
@@ -67,26 +67,31 @@ img {
 }
 
 .lightbox-wrapper {
+    height: 100%;
+    width: 100%;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 80%;
+    justify-content: space-between;
 }
 
 .lightbox-image-container {
-    max-width: 80%;
-    max-height: 75%;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .lightbox-wrapper img {
-    width: 100%;
-    max-height: 800px;
+    /* width: auto; */
+    /* max-height: 400px; */
+    height: 100%;
 }
 
 .MuiModal-root {
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: rgba(0, 0, 0, 0.8);
 }
 
 .albums-page-wrapper {
@@ -175,4 +180,17 @@ img {
     align-items: center;
     justify-content: center;
     flex-direction: column;
+}
+
+.lightbox-controls {
+    background-color: rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: 0px 3px 15px 7px rgba(0,0,0,0.1); 
+    box-shadow: 0px 3px 15px 7px rgba(0,0,0,0.1);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: row-reverse;
 }

@@ -1,10 +1,12 @@
-import { Button } from '@mui/material'
+import { IconButton, Tooltip } from '@mui/material'
 import axios from 'axios';
 import React from 'react'
+import { IoTrashBin } from 'react-icons/io5';
 
 type Props = {
     imageId: string;
     handleForceParentRerender: () => void;
+    iconSize?: number;
 }
 
 const API_ENDPOINT = "http://localhost:5050"
@@ -21,7 +23,9 @@ const SendToTrashButton = ({ imageId, handleForceParentRerender }: Props) => {
     }
 
     return (
-        <Button color="error" onClick={handleTrashImage}>Trash</Button>
+        <Tooltip title='Delete'>
+            <IconButton onClick={handleTrashImage}><IoTrashBin color="#FFFFFF"/></IconButton>
+        </Tooltip>
     )
 }
 

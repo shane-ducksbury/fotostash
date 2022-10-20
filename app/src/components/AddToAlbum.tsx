@@ -1,6 +1,7 @@
-import { Button, Menu, MenuItem } from "@mui/material"
+import { Button, IconButton, Menu, MenuItem, Tooltip } from "@mui/material"
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { IoAdd, IoAlbumsOutline } from "react-icons/io5";
 import Album from "../interfaces/Album";
 
 type Props = {
@@ -40,15 +41,17 @@ const AddToAlbum = ({imageId}: Props) => {
 
     return (
         <div>
-            <Button
-                id="basic-button"
-                aria-controls={open ? 'basic-menu' : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? 'true' : undefined}
-                onClick={handleClick}
-            >
-                Add to Album
-            </Button>
+            <Tooltip title='Add to Album'>
+                <IconButton
+                    id="basic-button"
+                    aria-controls={open ? 'basic-menu' : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={open ? 'true' : undefined}
+                    onClick={handleClick}
+                >
+                    <IoAlbumsOutline color="#FAFAFA" />
+                </IconButton>
+            </Tooltip>
             <Menu
                 id="basic-menu"
                 anchorEl={anchorEl}
@@ -62,7 +65,7 @@ const AddToAlbum = ({imageId}: Props) => {
                 albums.map(album => {
                     return(<MenuItem onClick={() => addToAlbum(album.id, imageId)}>{album.name}</MenuItem>)
                     }) 
-                : null}
+                : <MenuItem onClick={() => {return(null)}}>Create New Album</MenuItem>}
             </Menu>
         </div>
     )

@@ -10,18 +10,20 @@ type Props = {}
 
 const AllPhotos = (props: Props) => {
 
-    const [allPhotos, setAllPhotos] = useState([]);
+    const [allPhotos, setAllPhotos] = useState<Image[]>([]);
     const [modalOpen, setModalOpen] = useState(false);
     const [selectedImage, setSelectedImage] = useState<Image>({
         id: "null", name: "null", imageUrl: "null"
     });
+    const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0);
 
     const [rerender, setRerender] = useState<boolean>(true);
 
     useEffect(() => {
         if(rerender){
+            setModalOpen(false);
             getUserPhotos();
-            setRerender(false)
+            setRerender(false);
         }
     }, [rerender])
 
@@ -34,23 +36,32 @@ const AllPhotos = (props: Props) => {
         setRerender(true);
     }
 
-    const handleModalOpen = (image: Image) => {
+    const handleModalOpen = (image: Image, index: number) => {
         setModalOpen(true);
-        setSelectedImage(image)
+        setSelectedImage(image);
+        setSelectedImageIndex(index);
     }
 
     const handleModalClose = () => {
         setModalOpen(false);
     }
 
+    const handleImageChange = (direction: number) => {
+        const image = allPhotos.at(selectedImageIndex + direction);
+        if(!image) return
+        if(image){
+            setSelectedImage(image);
+            setSelectedImageIndex(selectedImageIndex + direction);
+        }
+    }
+
     return (
         <div>
             <h1>All Photos</h1>
-            
             <div className='album-wrapper'>
                 <ImageList sx={{ height: '80vh' }} cols={3} rowHeight={350}>
-                    {allPhotos.map((item: Image) => {
-                        return(<ImageListItem onClick={() => handleModalOpen(item)}>
+                    {allPhotos.map((item: Image, index: number) => {
+                        return(<ImageListItem onClick={() => handleModalOpen(item, index)} key={item.id}>
                             <img src={`${item.imageUrl}?w=164&h=164&fit=crop&auto=format`}
                                 srcSet={`${item.imageUrl}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
                                 alt='something'
@@ -58,19 +69,14 @@ const AllPhotos = (props: Props) => {
                         </ImageListItem>)
                     })}
                 </ImageList>
-                {/* {allPhotos ? 
-                allPhotos.map((item: Image) => { 
-                    return(
-                        <AlbumPreviewCard key={item.id} image={item} modalHandler={handleModalOpen} rerenderHandler={rerenderPage} />
-                        ) 
-                }) 
-                : `<h1>No Data</h1>`} */}
             </div>
 
-            <Modal open={modalOpen} onClose={handleModalClose} sx={{justifyContent: "center"}}>
-                <div className="lightbox-wrapper">
-                    <AlbumLightbox image={selectedImage} />
-                </div>
+            <Modal open={modalOpen} onClose={handleModalClose}>
+                <AlbumLightbox 
+                image={selectedImage} 
+                handleImageChange={handleImageChange}
+                handleForceParentRerender={rerenderPage}
+                />
             </Modal>
         </div>
     )
