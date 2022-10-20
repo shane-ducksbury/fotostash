@@ -25,6 +25,9 @@ export class Image {
     @Column()
     dateTime: string;
 
+    @Column()
+    md5Hash: string;
+
     @ManyToMany(() => Album, (album) => album.images, { onDelete: 'CASCADE' })
     albums: Album[];
 

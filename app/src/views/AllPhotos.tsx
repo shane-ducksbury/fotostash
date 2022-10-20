@@ -3,7 +3,6 @@ import { ImageList, ImageListItem, Modal } from '@mui/material';
 import AlbumLightbox from '../components/AlbumLightbox';
 
 import Image from '../interfaces/Image'
-import AlbumPreviewCard from '../components/AlbumPreviewCard';
 import UserService from '../services/UserService';
 
 type Props = {}
@@ -12,9 +11,7 @@ const AllPhotos = (props: Props) => {
 
     const [allPhotos, setAllPhotos] = useState<Image[]>([]);
     const [modalOpen, setModalOpen] = useState(false);
-    const [selectedImage, setSelectedImage] = useState<Image>({
-        id: "null", name: "null", imageUrl: "null"
-    });
+    const [selectedImage, setSelectedImage] = useState<Image | null>(null);
     const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0);
 
     const [rerender, setRerender] = useState<boolean>(true);
@@ -27,9 +24,19 @@ const AllPhotos = (props: Props) => {
         }
     }, [rerender])
 
+    const getImageDateTime = (dateTime: string) => {
+        const fixedDate = dateTime.split(' ')[0].replace(/:/g,'-');
+        const time = dateTime.split(' ')[1];
+        const date = Date.parse(`${fixedDate} ${time}`)
+        return date;
+    }
+
     const getUserPhotos = async () => {
-        const userImages = await UserService.getUserImages()
-        setAllPhotos(userImages)
+        const userImages = await UserService.getUserImages();
+        userImages.sort((a: Image, b: Image) => {
+            return getImageDateTime(a.dateTime) - getImageDateTime(b.dateTime);
+        })
+        setAllPhotos(userImages);
     }
 
     const rerenderPage = () => {
@@ -72,11 +79,13 @@ const AllPhotos = (props: Props) => {
             </div>
 
             <Modal open={modalOpen} onClose={handleModalClose}>
+                <>
                 <AlbumLightbox 
                 image={selectedImage} 
                 handleImageChange={handleImageChange}
                 handleForceParentRerender={rerenderPage}
                 />
+                </>
             </Modal>
         </div>
     )

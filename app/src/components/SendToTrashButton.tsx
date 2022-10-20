@@ -4,7 +4,7 @@ import React from 'react'
 import { IoTrashBin } from 'react-icons/io5';
 
 type Props = {
-    imageId: string;
+    imageId: string | null;
     handleForceParentRerender: () => void;
     iconSize?: number;
 }

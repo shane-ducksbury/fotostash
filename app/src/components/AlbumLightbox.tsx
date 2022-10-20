@@ -6,7 +6,7 @@ import LightboxButtons from './LightboxButtons'
 
 
 type Props = {
-    image: Image;
+    image: Image | null;
     handleImageChange: (direction: number) => void;
     handleForceParentRerender: () => void;
 }
@@ -15,14 +15,17 @@ const AlbumLightbox = ({ image, handleImageChange, handleForceParentRerender }: 
 
     return(
         <>
+        {image ?
         <LightboxButtons 
             image={image}
             handleForceParentRerender={handleForceParentRerender}
         />
+        : null
+        }
         <div className="lightbox-wrapper">
             <Button onClick={() => {handleImageChange(-1)}}><IoArrowBackCircle size={'2rem'} /></Button>
             <div className="lightbox-image-container">
-                <img src={image.imageUrl} alt="" />
+                <img src={image ? image.imageUrl : ''} alt="" />
             </div>
             <Button onClick={() => {handleImageChange(1)}} ><IoArrowForwardCircle size={'2rem'} /></Button>
         </div>

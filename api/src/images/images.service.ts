@@ -4,6 +4,7 @@ import { DeleteResult, Repository } from 'typeorm';
 import { CreateImageDto } from './dto/create-image.dto';
 import { Image } from './entities/image.entity';
 import { v4 as uuidv4 } from 'uuid';
+import { createHash } from 'crypto';
 
 import { MinioClientService } from 'src/minio-client/minio-client.service';
 import { BufferedFile } from 'src/minio-client/file.model';
@@ -35,6 +36,18 @@ export class ImagesService {
             .getOne()
 
         if (!image)throw new NotFoundException();
+
+        return image;
+    }
+
+    async getByHash(hash: string, userId: string): Promise<Image> {
+        const image = 
+        await this.imagesRepository
+            .createQueryBuilder('image')
+            .where('md5Hash = :hash and imageOwnerId = :userId', {hash: hash, userId: userId})
+            .getOne();
+
+        if (!image) return null;
 
         return image;
     }
@@ -77,14 +90,19 @@ export class ImagesService {
 
     async emptyTrash(userId: string): Promise<HttpStatus.NO_CONTENT> {
         const trashedImages = await this.getTrash(userId);
-
         if (trashedImages) trashedImages.forEach(image => this.deleteImage(image.id))
-
         return HttpStatus.NO_CONTENT
     }
 
     async uploadImage(file: BufferedFile, fileBuffer: Buffer, userId: string): Promise<Image> {
         const newImageUUID = uuidv4();
+        const hashSum = createHash('md5');
+        hashSum.update(fileBuffer);
+        const fileHash = hashSum.digest('hex');
+
+        const preExistingImage = await this.getByHash(fileHash, userId);
+        if(preExistingImage) return preExistingImage;
+
         const fileUrl = await this.minioService.upload(file, newImageUUID);
         const tags = await this.imageProcessorModule.getImageTags(fileBuffer);
         try{
@@ -104,7 +122,8 @@ export class ImagesService {
                 dateTime: newImageInfo.dateTime,
                 deleted: false,
                 imageOwnerId: userId,
-                imageInfo: newImageInfo.infoId
+                imageInfo: newImageInfo.infoId,
+                md5Hash: fileHash
             });
             return this.imagesRepository.save(newImage);
         } catch(e){
