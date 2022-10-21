@@ -1,44 +1,35 @@
 import { Button } from "@mui/material";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
-import AlbumImagePreview from "../components/AlbumImagePreview";
-import Album from "../interfaces/Album";
-import Image from "../interfaces/Image"
-
-type Props = {}
+import ImageAlbum from "../components/ImageAlbum";
+import Loading from "./Loading";
 
 const { REACT_APP_API_URL } = process.env
 const API_URL = REACT_APP_API_URL
 
-const SingleAlbum = (props: Props) => {
-
-    const [albumDetails, setAlbumDetails] = useState<Album>();
+const SingleAlbum = () => {
 
     const { albumId } = useParams();
 
-    useEffect(() => {
-        axios.get(`${API_URL}/albums/${albumId}`)
-        .then(response => setAlbumDetails(response.data))
-    },[albumId])
+    const getAlbumImages = async () => {
+        const res = await axios.get(`${API_URL}/albums/${albumId}`);
+        return res.data
+    }
 
-    return (
-        <div>SingleAlbum
-            {albumDetails?.images ?
-            albumDetails.images?.map((item: Image) => {
-                return(
-                    <div className="album-image-card" key={item.id}>
-                        <div>
-                            <AlbumImagePreview image={item} />
-                        </div>
-                        <Button>Add to Album</Button>
-                    </div>
-                    )
-            })
-            : "Nothing Here"  
-            }
-        </div>
-    )
+    const { data, status, refetch } = useQuery('albumImages', getAlbumImages, {refetchOnMount: true});
+
+    const refetchData = () => {
+        refetch();
+    }
+
+    if(status === 'success') {
+        return (
+            <ImageAlbum imageAlbum={data.images} refetch={refetchData} albumName={data.name} />
+            )
+        }
+    return <Loading />
+
 }
 
 export default SingleAlbum

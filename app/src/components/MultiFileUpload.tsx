@@ -1,5 +1,4 @@
-import { LinearProgress } from "@mui/material";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { useDropzone, FileError, FileRejection } from "react-dropzone";
 import UploadProgressBar from "./UploadProgressBar";
@@ -59,11 +58,11 @@ const MultiFileUpload = () => {
                         setErroredFiles([...erroredFiles, fileWrapper.file.name]);
                     }
                 })
-                setFiles([])
+                setFiles([]);
             }
         }
         if(files.length > 0){
-            handleSubmit()
+            handleSubmit();
         }
     },[files])
 

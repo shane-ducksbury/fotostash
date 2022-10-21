@@ -8,6 +8,7 @@
 
 body {
     height: 100%;
+    background-color: #fafafa;
 }
 
 #root {
@@ -193,4 +194,51 @@ main {
     z-index: 1;
     display: flex;
     flex-direction: row-reverse;
+}
+
+.spinner-wrapper {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.album-title-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.albums-container {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.album-preview {
+    display: flex;
+    width: 18rem;
+    height: 19rem;
+    border-radius: 8px;
+    /* background-color: #e6e6e6; */
+    object-fit: cover;
+}
+
+.album-preview-single {
+    width: 100%;
+    border-radius: 8px;
+}
+
+.album-preview-tile-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    /* align-items: center; */
+    justify-content: center;
+}
+
+.album-preview-tiled {
+    width: 48%;
+    object-fit: cover;
+    padding: 2px;
+    border-radius: 12px;
 }

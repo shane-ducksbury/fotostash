@@ -1,6 +1,7 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@mui/material'
 import axios from 'axios';
 import React, { useState } from 'react'
+import { IoAddCircleOutline } from 'react-icons/io5';
 
 type Props = {
     setParentToStaleCallback: () => void; 
@@ -36,7 +37,7 @@ const CreateNewAlbumButton = ({ setParentToStaleCallback }: Props) => {
 
     return (
         <>
-            <Button onClick={handleClickOpen}>Create New Album</Button>
+            <Button onClick={handleClickOpen}><IoAddCircleOutline fontSize={'1.2rem'} /> New Album</Button>
             <Dialog open={open} onClose={handleClose} >
                 <DialogTitle>Enter a New Album Name</DialogTitle>
                 <DialogContent sx={{"width": "400px"}}>

@@ -95,13 +95,13 @@ export class ImagesService {
     }
 
     async uploadImage(file: BufferedFile, fileBuffer: Buffer, userId: string): Promise<Image> {
-        const newImageUUID = uuidv4();
         const hashSum = createHash('md5');
         hashSum.update(fileBuffer);
         const fileHash = hashSum.digest('hex');
-
         const preExistingImage = await this.getByHash(fileHash, userId);
         if(preExistingImage) return preExistingImage;
+
+        const newImageUUID = uuidv4();
 
         const fileUrl = await this.minioService.upload(file, newImageUUID);
         const tags = await this.imageProcessorModule.getImageTags(fileBuffer);
@@ -129,6 +129,5 @@ export class ImagesService {
         } catch(e){
             throw new HttpException('The upload failed due to an issue with the database', HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return null
     }
 }

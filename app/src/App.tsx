@@ -3,7 +3,6 @@ import 'normalize.css';
 import './style.css';
 
 import { Routes, Route } from 'react-router-dom';
-import AllPhotos from './views/AllPhotos';
 import Upload from './views/Upload';
 import Navigation from './components/Navigation';
 import Albums from './views/Albums';
@@ -16,6 +15,10 @@ import ProtectedRoute from './components/ProtectedRoute';
 import DrawerNavigation from './components/DrawerNavigation';
 import Logout from './views/Logout';
 import MultiFileUpload from './components/MultiFileUpload';
+import AllPhotos from './views/AllPhotos';
+import { QueryClient, QueryClientProvider } from 'react-query';
+
+const queryClient = new QueryClient();
 
 const App = () => {
     const [userValid, setUserValid] = useState<boolean>(false);
@@ -35,6 +38,7 @@ const App = () => {
 
 
     return (
+        <QueryClientProvider client={queryClient}>
         <div className="App">
         {/* <Navigation /> */}
         {userValid ? <DrawerNavigation /> : null}
@@ -54,6 +58,7 @@ const App = () => {
                 </Routes>
             </main>
         </div>
+        </QueryClientProvider>
     );
 }
 
