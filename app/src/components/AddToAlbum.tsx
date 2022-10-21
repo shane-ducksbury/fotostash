@@ -35,7 +35,6 @@ const AddToAlbum = ({imageId}: Props) => {
             API_ENDPOINT + '/albums/' + albumId + '/add-image',
             {"imageId": imageId}
             )
-        .then(response => console.log(response))
         handleClose();
     }
 

@@ -4,6 +4,10 @@
     font-family: 'Poppins', sans-serif;
     font-size: 16px;
     height: 100%;
+    --primary-color: #2DB79D;
+    --text-green: #175C4F;
+    --light-primary: #d5f1eb;
+    --secondary-color: #393C8E;
 }
 
 body {
@@ -101,6 +105,15 @@ main {
 }
 
 /* Login Form */
+.login-form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    background: rgb(45,183,157);
+    background: linear-gradient(153deg, rgba(45,183,157,1) 19%, rgba(57,60,142,1) 100%);
+}
+
 .login-form > form{
     display: flex;
     flex-direction: column;
@@ -125,7 +138,7 @@ main {
 }
 
 .nav-drawer > div{
-    /* background-color: #2DB79D; */
+    /* background-color: var(--primary-color); */
     display: flex;
     align-items: center;
 }
@@ -140,6 +153,21 @@ main {
     width: 15rem;
 }
 
+.nav-desktop a:hover {
+    background-color: #2DB79D;
+    border-radius: 0 30px 30px 0;
+    margin-right: 0.6rem;
+}
+
+.nav-button:hover {
+    background-color: unset !important;
+}
+
+.nav-desktop li {
+    padding-top: unset;
+    padding-bottom: unset;
+}
+
 .nav-drawer a {
     color: black;
     text-decoration: none;
@@ -151,7 +179,7 @@ main {
 
 .nav-drawer a:hover {
     /* background-color: blue; */
-    border-radius: 5px;
+    /* border-radius: 5px; */
 }
 
 .nav-drawer button:hover {
@@ -162,6 +190,14 @@ main {
     margin: 0 1.8rem 0 0.2rem;
 }
 
+.nav-selected {
+    color: var(--text-green) !important;
+    background-color: var(--light-primary);
+    border-radius: 0 30px 30px 0;
+    margin-right: 0.6rem;
+}
+
+/* Dropzone */
 .dropzone {
     display: flex;
     align-items: center;

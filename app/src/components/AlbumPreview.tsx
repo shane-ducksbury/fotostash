@@ -37,8 +37,6 @@ const AlbumPreview = ({albumId}: Props) => {
         }
     }
 
-    console.log(data)
-
     return (
         <div className='album-preview'>
         {status === 'loading' && <CircularProgress />}

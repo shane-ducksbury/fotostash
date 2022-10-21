@@ -18,6 +18,7 @@ import MultiFileUpload from './components/MultiFileUpload';
 import AllPhotos from './views/AllPhotos';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
+
 const queryClient = new QueryClient();
 
 const App = () => {
@@ -35,7 +36,6 @@ const App = () => {
         if(auth) setUserValid(true);
         setAuthChecked(true);
     }
-
 
     return (
         <QueryClientProvider client={queryClient}>

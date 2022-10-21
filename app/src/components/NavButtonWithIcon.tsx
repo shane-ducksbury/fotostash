@@ -6,10 +6,11 @@ type NavButtonWithIconProps = {
     icon: ReactElement,
     iconText: string,
     showIconText: boolean,
+    currentPath: string,
     linkLocation?: string
 }
 
-export const NavButtonWithIcon = ({ icon, iconText, showIconText, linkLocation }: NavButtonWithIconProps) => {
+export const NavButtonWithIcon = ({ icon, iconText, showIconText, linkLocation, currentPath }: NavButtonWithIconProps) => {
 
     const generateButtonContent = (icon: ReactElement, iconText: string, showIconText: boolean) => {
         return (<>
@@ -18,7 +19,7 @@ export const NavButtonWithIcon = ({ icon, iconText, showIconText, linkLocation }
                 minHeight: 48,
                 justifyContent: 'center',
                 px: 2.5,
-            }}>
+            }} className='nav-button'>
                 {icon}
                 {showIconText ? <ListItemText primary={iconText} /> : null}
             </ListItemButton>
@@ -26,10 +27,17 @@ export const NavButtonWithIcon = ({ icon, iconText, showIconText, linkLocation }
         </>)
         }
 
+    const checkPath = () => {
+        if(!linkLocation) return undefined
+        if(currentPath !== '/' && linkLocation === '/') return undefined
+        if(currentPath.includes(linkLocation)) return 'nav-selected'
+        return undefined
+    }
+
     return(
         <>
             {linkLocation ?
-            <Link to={linkLocation}>{generateButtonContent(icon, iconText, showIconText)}</Link> 
+            <Link to={linkLocation} className={checkPath()}>{generateButtonContent(icon, iconText, showIconText)}</Link> 
             : generateButtonContent(icon, iconText, showIconText)}
         </>
     )
