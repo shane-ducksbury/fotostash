@@ -43,9 +43,9 @@ export class AlbumsController {
     return this.albumsService.update(+id, updateAlbumDto);
   }
 
-  
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.albumsService.remove(+id);
+  remove(@Param('id') id: string, @Request() req) {
+    return this.albumsService.delete(id, req.user.id);
   }
 }

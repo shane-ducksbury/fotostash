@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpCode, HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
 import { v4 as uuidv4 } from 'uuid';
@@ -53,8 +53,20 @@ export class AlbumsService {
     return `This action updates a #${id} album`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} album`;
+  async delete(albumId: string, userId: string) {
+    const albumToDelete = await this.findOne(albumId, userId);
+    if(!albumToDelete) return new HttpException('Album Does Not Exist or Not Found', HttpStatus.BAD_REQUEST)
+    try{
+      await this.albumsRepository
+      .createQueryBuilder()
+      .delete()
+      .from(Album)
+      .where('id = :id', {id: albumId})
+      .execute();
+      return `Deleted ${albumId}`
+    } catch(e) {
+      throw new HttpException('The Delete failed due to an issue with the database', HttpStatus.INTERNAL_SERVER_ERROR); 
+    }
   }
 
   async addImageToAlbum(albumId: string, addImageToAlbumDto: AddImageToAlbumDto, userId: string): Promise<Album> {
