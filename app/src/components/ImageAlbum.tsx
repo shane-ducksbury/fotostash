@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { ImageList, ImageListItem, Modal } from '@mui/material';
+import { ImageList, ImageListItem, ImageListItemBar, Modal } from '@mui/material';
 import AlbumLightbox from './AlbumLightbox';
 
 import Image from '../interfaces/Image'
+import { IoCheckmarkCircleOutline } from 'react-icons/io5';
 
 type Props = {
     imageAlbum: Image[];
@@ -13,6 +14,7 @@ type Props = {
 const ImageAlbum = ({ imageAlbum, refetch, albumName }: Props) => {
 
     const [allPhotos, setAllPhotos] = useState<Image[]>(imageAlbum);
+    const [allPhotoDates, setAllPhotoDates] = useState<number[]>([]);
     const [modalOpen, setModalOpen] = useState(false);
     const [selectedImage, setSelectedImage] = useState<Image | null>(null);
     const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0);
@@ -22,7 +24,7 @@ const ImageAlbum = ({ imageAlbum, refetch, albumName }: Props) => {
     const getImageDateTime = (dateTime: string) => {
         const fixedDate = dateTime.split(' ')[0].replace(/:/g,'-');
         const time = dateTime.split(' ')[1];
-        const date = Date.parse(`${fixedDate} ${time}`)
+        const date = Date.parse(`${fixedDate} ${time}`);
         return date;
     }
 
@@ -52,7 +54,13 @@ const ImageAlbum = ({ imageAlbum, refetch, albumName }: Props) => {
 
     const sortPhotos = () => {
         allPhotos.sort((a: Image, b: Image) => {
-            return getImageDateTime(a.dateTime) - getImageDateTime(b.dateTime);
+            return getImageDateTime(b.dateTime) - getImageDateTime(a.dateTime);
+        })
+    }
+
+    const getPhotoDates = () => {
+        allPhotos.forEach((image: Image) => {
+
         })
     }
 
@@ -62,14 +70,16 @@ const ImageAlbum = ({ imageAlbum, refetch, albumName }: Props) => {
         <div>
             <h1>{useAlbumName}</h1>
             <div className='album-wrapper'>
-                <ImageList sx={{ height: '80vh' }} cols={3} rowHeight={350}>
+                <ImageList sx={{ height: '80vh' }} cols={4} rowHeight={200}>
                     {allPhotos.map((item: Image, index: number) => {
-                        return(<ImageListItem onClick={() => handleModalOpen(item, index)} key={item.id}>
-                            <img src={`${item.imageUrl}?w=164&h=164&fit=crop&auto=format`}
-                                srcSet={`${item.imageUrl}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                                alt='something'
-                                loading="lazy" />
-                        </ImageListItem>)
+                        return(
+                            <ImageListItem  key={item.id}>
+                                <img onClick={() => handleModalOpen(item, index)} className='album-image' src={`${item.imageUrl}`}
+                                    srcSet={`${item.imageUrl}`}
+                                    alt='something'
+                                    loading="lazy" />
+                            </ImageListItem>
+                        )
                     })}
                 </ImageList>
             </div>

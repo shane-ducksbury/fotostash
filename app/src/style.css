@@ -62,6 +62,12 @@ main {
     cursor: pointer;
 }
 
+.album-image{
+    max-width: 100%;
+    object-fit: cover;
+    overflow: hidden;
+}
+
 /* img {
     width: 100%;
 } */
@@ -107,6 +113,7 @@ main {
 /* Login Form */
 .login-form {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     height: 100%;
@@ -138,7 +145,7 @@ main {
 }
 
 .nav-drawer > div{
-    /* background-color: var(--primary-color); */
+    /* background-color: #041210; */
     display: flex;
     align-items: center;
 }

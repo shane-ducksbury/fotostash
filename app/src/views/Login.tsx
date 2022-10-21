@@ -50,7 +50,7 @@ const Login = ({ validateUser }: Props) => {
                     label={"Password"} 
                     type={"password"}
                 />
-            <Button onClick={handleSubmit(onSubmit)}>Submit</Button>
+            <Button type='submit' onClick={handleSubmit(onSubmit)}>Submit</Button>
             <Button onClick={() => reset()} variant={"outlined"}>Reset</Button>
             </form>
         </div>

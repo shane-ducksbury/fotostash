@@ -17,6 +17,7 @@ import Logout from './views/Logout';
 import MultiFileUpload from './components/MultiFileUpload';
 import AllPhotos from './views/AllPhotos';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { useNavigate } from 'react-router-dom';
 
 
 const queryClient = new QueryClient();
@@ -25,22 +26,21 @@ const App = () => {
     const [userValid, setUserValid] = useState<boolean>(false);
     const [authChecked, setAuthChecked] = useState<boolean>(false);
 
-    useEffect(() => {
-        if(!userValid){
-            validateUser();
-        }
-    },[])
+    const navigate = useNavigate();
 
     const validateUser = async () => {
         const auth = await AuthService.checkExistingAuth();
         if(auth) setUserValid(true);
         setAuthChecked(true);
+        // navigate('/')
+        console.log('validating')
     }
+
+    validateUser();
 
     return (
         <QueryClientProvider client={queryClient}>
         <div className="App">
-        {/* <Navigation /> */}
         {userValid ? <DrawerNavigation /> : null}
             <main>
                 <Routes>
