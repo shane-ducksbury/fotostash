@@ -52,9 +52,9 @@ const DrawerNavigation = (props: DrawerNavigationProps) => {
     }
 
     return (
-        <Drawer variant="permanent" open={true} anchor={windowSize.innerWidth < 500 ? 'bottom' : 'left'} className={windowSize.innerWidth > 500 ? 'nav-drawer nav-drawer-desktop' : 'nav-drawer'}>
+        <Drawer variant="permanent" open={true} anchor={windowSize.innerWidth > 500 ? 'left' : 'bottom'} className={windowSize.innerWidth < 500 ? 'nav-drawer' : 'nav-drawer  nav-drawer-desktop'}>
             {windowSize.innerWidth > 500 ? <h1><span className="logo">fotostash</span></h1> : null} 
-            <List className={windowSize.innerWidth < 500 ? 'nav-mobile' : 'nav-desktop'}>
+            <List className={windowSize.innerWidth > 500 ? 'nav-desktop' : 'nav-mobile'}>
                 <NavButtonWithIcon icon={<IoImage size={'1.5rem'} />} iconText={'Photos'} showIconText={showText} linkLocation={'/'} currentPath={currentPath}/>
                 <NavButtonWithIcon icon={<IoAlbums size={'1.5rem'} />} iconText={'Albums'} showIconText={showText} linkLocation={'/albums'} currentPath={currentPath}/>
                 <NavButtonWithIcon icon={<IoCloudUpload size={'1.5rem'} />} iconText={'Upload'} showIconText={showText} linkLocation={'/upload'} currentPath={currentPath}/>

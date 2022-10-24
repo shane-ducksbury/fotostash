@@ -27,3 +27,4 @@ Below are a list of resources I used to help build out this project.
 [Custom API Service with Hooks](https://www.bezkoder.com/react-hooks-jwt-auth/#Create_React_Pages_for_Authentication)
 [Material UI and react-hook-form](https://blog.logrocket.com/using-material-ui-with-react-hook-form/)
 [Why UseEffect is a bad place to make API calls](https://articles.wesionary.team/why-useeffect-is-a-bad-place-to-make-api-calls-98a606735c1c)
+[Guide to Date Time Manipulation](https://www.toptal.com/software/definitive-guide-to-datetime-manipulation)

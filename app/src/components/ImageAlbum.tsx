@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { ImageList, ImageListItem, ImageListItemBar, Modal } from '@mui/material';
+import { Modal } from '@mui/material';
 import AlbumLightbox from './AlbumLightbox';
 
 import Image from '../interfaces/Image'
-import { IoCheckmarkCircleOutline } from 'react-icons/io5';
+import AlbumImageList from './AlbumImageList';
 
 type Props = {
     imageAlbum: Image[];
@@ -12,19 +12,58 @@ type Props = {
 }
 
 const ImageAlbum = ({ imageAlbum, refetch, albumName }: Props) => {
+    // This component has become quite large and should be broken down at some point
+
+    const getWindowSize = () => {
+        const {innerWidth, innerHeight} = window;
+        return {innerWidth, innerHeight};
+    }
+
+    useEffect(() => {
+        const handleWindowResize = () => {
+            setWindowSize(getWindowSize());
+        }
+        window.addEventListener('resize', handleWindowResize);
+        return () => {
+            window.removeEventListener('resize', handleWindowResize);
+        };
+    }, []);
+
+    
+    const [numberOfCols, setNumberOfCols] = useState<number>(4);
+    const [windowSize, setWindowSize] = useState(getWindowSize());
+    
+    const getNumberOfCols = () => {
+        if(windowSize.innerWidth >= 500){
+            const numOfCols =  Math.floor((windowSize.innerWidth - 250) / 280);
+            return numOfCols ?? 1;
+        }
+        return Math.floor(windowSize.innerWidth / 125);
+    }
+
+    useEffect(() => {
+        setNumberOfCols(getNumberOfCols());
+    },[windowSize.innerWidth])
+
 
     const [allPhotos, setAllPhotos] = useState<Image[]>(imageAlbum);
-    const [allPhotoDates, setAllPhotoDates] = useState<number[]>([]);
+    const [allPhotoDates, setAllPhotoDates] = useState<string[]>([]);
     const [modalOpen, setModalOpen] = useState(false);
     const [selectedImage, setSelectedImage] = useState<Image | null>(null);
     const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0);
     const useAlbumName = albumName ?? 'All Photos';
 
+    const getImageDateTimeEpoch = (dateTime: string) => {
+        const fixedDate = dateTime.split(' ')[0].replace(/:/g,'-');
+        const time = dateTime.split(' ')[1];
+        const date = Date.parse(`${fixedDate} ${time}`);
+        return date;
+    }
 
     const getImageDateTime = (dateTime: string) => {
         const fixedDate = dateTime.split(' ')[0].replace(/:/g,'-');
         const time = dateTime.split(' ')[1];
-        const date = Date.parse(`${fixedDate} ${time}`);
+        const date = new Date(`${fixedDate} ${time}`);
         return date;
     }
 
@@ -54,34 +93,53 @@ const ImageAlbum = ({ imageAlbum, refetch, albumName }: Props) => {
 
     const sortPhotos = () => {
         allPhotos.sort((a: Image, b: Image) => {
-            return getImageDateTime(b.dateTime) - getImageDateTime(a.dateTime);
+            return getImageDateTimeEpoch(b.dateTime) - getImageDateTimeEpoch(a.dateTime);
         })
     }
 
     const getPhotoDates = () => {
+        const imageDates: string[] = [];
         allPhotos.forEach((image: Image) => {
-
+            const imageDate = getImageDateTime(image.dateTime).toDateString();
+            if(!imageDates.includes(imageDate)){
+                imageDates.push(imageDate);
+            }
         })
+        setAllPhotoDates(imageDates);
     }
+    
+    useEffect(() => {
+        getPhotoDates();
+        sortPhotos();
+    },[])
 
-    sortPhotos();
 
     return (
         <div>
             <h1>{useAlbumName}</h1>
+
             <div className='album-wrapper'>
-                <ImageList sx={{ height: '80vh' }} cols={4} rowHeight={200}>
-                    {allPhotos.map((item: Image, index: number) => {
-                        return(
-                            <ImageListItem  key={item.id}>
-                                <img onClick={() => handleModalOpen(item, index)} className='album-image' src={`${item.imageUrl}`}
-                                    srcSet={`${item.imageUrl}`}
-                                    alt='something'
-                                    loading="lazy" />
-                            </ImageListItem>
-                        )
-                    })}
-                </ImageList>
+                {allPhotoDates && !albumName ? 
+                allPhotoDates.map(date => {
+                    return (
+                        <>
+                        <h3>{date}</h3>
+                        <AlbumImageList 
+                            allPhotos={allPhotos}
+                            numberOfCols={numberOfCols}
+                            date={date}
+                            getImageDateTime={getImageDateTime}
+                            handleModalOpen={handleModalOpen}
+                            />
+                        </>
+                    )})
+                :                         
+                <AlbumImageList 
+                    allPhotos={allPhotos}
+                    numberOfCols={numberOfCols}
+                    getImageDateTime={getImageDateTime}
+                    handleModalOpen={handleModalOpen}
+                />}
             </div>
 
             <Modal open={modalOpen} onClose={handleModalClose}>

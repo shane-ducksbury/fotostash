@@ -32,8 +32,6 @@ const App = () => {
         const auth = await AuthService.checkExistingAuth();
         if(auth) setUserValid(true);
         setAuthChecked(true);
-        // navigate('/')
-        console.log('validating')
     }
 
     validateUser();
