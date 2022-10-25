@@ -180,9 +180,14 @@ main > div {
     margin: 0.8rem;
 }
 
+.signup-form h3 {
+    color: #fafafa;
+    margin: 0.8rem;
+}
+/* 
 .signup-form a:visited{
     color: #fafafa;
-}
+} */
 
 
 /* Nav */

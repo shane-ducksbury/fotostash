@@ -29,9 +29,10 @@ const Register = (props: Props) => {
         <div className='signup-form'>
             {validRegister ? <Navigate to='/login' /> : null}
             <h1><span className="logo">fotostash</span></h1>
-            <h1>Register</h1>
-            <Alert severity='info' sx={{'width': 700}}>
-                Sign up for fotostash, a self-hostable web application for managing your photos. fotostash is currently in testing. There is a chance your photos may be deleted from this demo server, so please don't store personal or precious images here until fotostash reaches beta.
+            <h3>Register</h3>
+            <Alert severity='info' sx={{'max-width': 700}}>
+                Sign up for fotostash, a self-hostable web application for managing your photos. fotostash is currently in testing. There is a chance your photos may be deleted from this demo server, so please don't store personal or precious images here.
+                <br></br><br></br><Link to='/login'>Already have an account?</Link>
             </Alert>
             {registerInvalid ?
             <Alert severity="error">
@@ -64,7 +65,7 @@ const Register = (props: Props) => {
                 <Button onClick={handleSubmit(onSubmit)}>Register</Button>
                 <Button onClick={() => reset()} variant={"outlined"}>Reset</Button>
             </form>
-            <Link to='/login'>Already have an account?</Link>
+            
         </div>
     )
 }
