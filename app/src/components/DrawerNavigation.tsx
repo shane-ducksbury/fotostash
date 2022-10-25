@@ -26,7 +26,7 @@ const DrawerNavigation = (props: DrawerNavigationProps) => {
         }, []);
 
     useEffect(() => {
-        if(windowSize.innerWidth > 500){
+        if(windowSize.innerWidth > 800){
             setShowText(true);
         } else {
             setShowText(false)
@@ -52,9 +52,9 @@ const DrawerNavigation = (props: DrawerNavigationProps) => {
     }
 
     return (
-        <Drawer variant="permanent" open={true} anchor={windowSize.innerWidth > 500 ? 'left' : 'bottom'} className={windowSize.innerWidth < 500 ? 'nav-drawer' : 'nav-drawer  nav-drawer-desktop'}>
-            {windowSize.innerWidth > 500 ? <h1><span className="logo">fotostash</span></h1> : null} 
-            <List className={windowSize.innerWidth > 500 ? 'nav-desktop' : 'nav-mobile'}>
+        <Drawer variant="permanent" open={true} anchor={windowSize.innerWidth > 800 ? 'left' : 'bottom'} className={windowSize.innerWidth < 801 ? 'nav-drawer' : 'nav-drawer  nav-drawer-desktop'}>
+            {windowSize.innerWidth > 800 ? <h1><span className="logo">fotostash</span></h1> : null} 
+            <List className={windowSize.innerWidth > 800 ? 'nav-desktop' : 'nav-mobile'}>
                 <NavButtonWithIcon icon={<IoImage size={'1.5rem'} />} iconText={'Photos'} showIconText={showText} linkLocation={'/'} currentPath={currentPath}/>
                 <NavButtonWithIcon icon={<IoAlbums size={'1.5rem'} />} iconText={'Albums'} showIconText={showText} linkLocation={'/albums'} currentPath={currentPath}/>
                 <NavButtonWithIcon icon={<IoCloudUpload size={'1.5rem'} />} iconText={'Upload'} showIconText={showText} linkLocation={'/upload'} currentPath={currentPath}/>

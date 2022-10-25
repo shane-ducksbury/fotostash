@@ -13,39 +13,6 @@ type Props = {
 
 const ImageAlbum = ({ imageAlbum, refetch, albumName }: Props) => {
     // This component has become quite large and should be broken down at some point
-
-    const getWindowSize = () => {
-        const {innerWidth, innerHeight} = window;
-        return {innerWidth, innerHeight};
-    }
-
-    useEffect(() => {
-        const handleWindowResize = () => {
-            setWindowSize(getWindowSize());
-        }
-        window.addEventListener('resize', handleWindowResize);
-        return () => {
-            window.removeEventListener('resize', handleWindowResize);
-        };
-    }, []);
-
-    
-    const [numberOfCols, setNumberOfCols] = useState<number>(4);
-    const [windowSize, setWindowSize] = useState(getWindowSize());
-    
-    const getNumberOfCols = () => {
-        if(windowSize.innerWidth >= 500){
-            const numOfCols =  Math.floor((windowSize.innerWidth - 250) / 280);
-            return numOfCols ?? 1;
-        }
-        return Math.floor(windowSize.innerWidth / 125);
-    }
-
-    useEffect(() => {
-        setNumberOfCols(getNumberOfCols());
-    },[windowSize.innerWidth])
-
-
     const [allPhotos, setAllPhotos] = useState<Image[]>(imageAlbum);
     const [allPhotoDates, setAllPhotoDates] = useState<string[]>([]);
     const [modalOpen, setModalOpen] = useState(false);
@@ -123,10 +90,9 @@ const ImageAlbum = ({ imageAlbum, refetch, albumName }: Props) => {
                 allPhotoDates.map(date => {
                     return (
                         <>
-                        <h3>{date}</h3>
+                        <h2>{date}</h2>
                         <AlbumImageList 
                             allPhotos={allPhotos}
-                            numberOfCols={numberOfCols}
                             date={date}
                             getImageDateTime={getImageDateTime}
                             handleModalOpen={handleModalOpen}
@@ -136,7 +102,6 @@ const ImageAlbum = ({ imageAlbum, refetch, albumName }: Props) => {
                 :                         
                 <AlbumImageList 
                     allPhotos={allPhotos}
-                    numberOfCols={numberOfCols}
                     getImageDateTime={getImageDateTime}
                     handleModalOpen={handleModalOpen}
                 />}
@@ -148,6 +113,7 @@ const ImageAlbum = ({ imageAlbum, refetch, albumName }: Props) => {
                 image={selectedImage} 
                 handleImageChange={handleImageChange}
                 handleForceParentRerender={refetchImages}
+                handleCloseModal={handleModalClose}
                 />
                 </>
             </Modal>

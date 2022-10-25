@@ -9,9 +9,10 @@ type Props = {
     image: Image | null;
     handleImageChange: (direction: number) => void;
     handleForceParentRerender: () => void;
+    handleCloseModal: () => void;
 }
 
-const AlbumLightbox = ({ image, handleImageChange, handleForceParentRerender }: Props) => {
+const AlbumLightbox = ({ image, handleImageChange, handleForceParentRerender, handleCloseModal }: Props) => {
 
     return(
         <>
@@ -19,6 +20,7 @@ const AlbumLightbox = ({ image, handleImageChange, handleForceParentRerender }: 
         <LightboxButtons 
             image={image}
             handleForceParentRerender={handleForceParentRerender}
+            handleCloseModal={handleCloseModal}
         />
         : null
         }
