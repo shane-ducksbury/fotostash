@@ -25,7 +25,7 @@ const SingleAlbum = () => {
 
     if(status === 'success') {
         return (
-            <ImageAlbum imageAlbum={data.images} refetch={refetchData} albumName={data.name} />
+                <ImageAlbum imageAlbum={data.images} refetch={refetchData} albumName={data.name} />
             )
         }
     return <Loading />

@@ -71,7 +71,7 @@ const MultiFileUpload = () => {
     },[progress])
 
     return(
-        <div>
+        <>
             {erroredFiles.length > 0 ? <p>The following files failed to upload {erroredFiles.map(file => {return(file + ', ')})} </p> : null}
                 {progress === 0 
                 ? <div {...getRootProps({className: 'dropzone'})} >
@@ -83,7 +83,7 @@ const MultiFileUpload = () => {
                 currentIndex={currentIndex} 
                 totalFiles={filesLength}
                 />}
-        </div>
+        </>
     )
 }
 

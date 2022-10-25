@@ -1,5 +1,6 @@
 import React from 'react'
 import { Navigate, Outlet } from 'react-router-dom';
+import Loading from '../views/Loading';
 
 type Props = {
     user: any;
@@ -15,7 +16,7 @@ const ProtectedRoute = ({
         authChecked
     }: Props) => {
         if(!authChecked){
-            return(<p>Page Loading</p>)
+            return(<Loading />)
         }
         if(!user){
             return <Navigate to={redirectPath} replace />

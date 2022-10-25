@@ -23,9 +23,18 @@ const AllPhotos = (props: Props) => {
     }
 
     if(status === 'success') {
-        return (
-            <ImageAlbum imageAlbum={data} refetch={refetchData} />
+        if(data.length === 0){
+            return(
+                <div className='no-content'>
+                    <img src="img/camera.svg" alt="" />
+                    <h2>Looks like you haven't uploaded any photos yet. Drop some here, or use the Upload Button.</h2>
+                </div>
             )
+        } else {
+            return (
+                    <ImageAlbum imageAlbum={data} refetch={refetchData} />
+                )
+        }
         }
     return <Loading />
 

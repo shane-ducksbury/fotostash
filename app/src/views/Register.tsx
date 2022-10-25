@@ -1,7 +1,7 @@
 import { Alert, AlertTitle, Button } from '@mui/material';
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
-import { Navigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { FormInputText } from '../components/FormInputText'
 import AuthService from '../services/AuthService';
 
@@ -28,7 +28,11 @@ const Register = (props: Props) => {
     return (
         <div className='signup-form'>
             {validRegister ? <Navigate to='/login' /> : null}
+            <h1><span className="logo">fotostash</span></h1>
             <h1>Register</h1>
+            <Alert severity='info' sx={{'width': 700}}>
+                Sign up for fotostash, a self-hostable web application for managing your photos. fotostash is currently in testing. There is a chance your photos may be deleted from this demo server, so please don't store personal or precious images here until fotostash reaches beta.
+            </Alert>
             {registerInvalid ?
             <Alert severity="error">
                 <AlertTitle>Error</AlertTitle>
@@ -57,9 +61,10 @@ const Register = (props: Props) => {
                     control={control}
                     label={"Last Name"} 
                 />
-                <Button onClick={handleSubmit(onSubmit)}>Submit</Button>
+                <Button onClick={handleSubmit(onSubmit)}>Register</Button>
                 <Button onClick={() => reset()} variant={"outlined"}>Reset</Button>
             </form>
+            <Link to='/login'>Already have an account?</Link>
         </div>
     )
 }

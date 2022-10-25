@@ -47,7 +47,7 @@ const Albums = (props: Props) => {
                     <CreateNewAlbumButton setParentToStaleCallback={forceAlbumRefresh} />
                 </div>
                 <section className='albums-container'>
-                {albums ? albums.map(album => {
+                {albums.length > 0 ? albums.map(album => {
                     return(
                         <div>
                             <AlbumPreview albumId={album.id} />
@@ -55,7 +55,12 @@ const Albums = (props: Props) => {
                         </div>
                     )
                 })
-                : <h1>No Albums Yet</h1>}
+                : 
+                <div className='no-content'>
+                    <img src="img/organize-photo.svg" alt="" />
+                    <h2>Looks like you haven't created an album yet.</h2>
+                </div>
+                }
                 </section>
             </div>
         )

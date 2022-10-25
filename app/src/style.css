@@ -16,6 +16,8 @@ body {
     background-color: #fafafa;
 }
 
+
+
 #root {
     height: 100%;
 }
@@ -41,6 +43,9 @@ nav {
 
 main {
     width: 100%;
+}
+
+main > div {
     margin: 1rem;
 }
 
@@ -123,6 +128,7 @@ main {
     height: 100%;
     background: rgb(45,183,157);
     background: linear-gradient(153deg, rgba(45,183,157,1) 19%, rgba(57,60,142,1) 100%);
+    margin: unset;
 }
 
 .login-form > form{
@@ -130,17 +136,52 @@ main {
     flex-direction: column;
     width: 600px;
     max-width: 95%;
-    height: 300px;
-    justify-content: center;
+    height: 200px;
+    justify-content: space-evenly;
+    margin: 3rem 0;
 }
 
-/* Login Form */
+.login-form a:visited{
+    color: #fafafa;
+}
+
+.login-form h1 {
+    color: #fafafa;
+}
+
+.login-form img {
+    width: 8rem;
+}
+
+/* Signup Form */
+.signup-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    background: rgb(45,183,157);
+    background: linear-gradient(153deg, rgba(45,183,157,1) 19%, rgba(57,60,142,1) 100%);
+    margin: unset;
+}
+
 .signup-form > form{
     display: flex;
     flex-direction: column;
     width: 600px;
-    height: 300px;
-    justify-content: center;
+    max-width: 95%;
+    height: 400px;
+    justify-content: space-evenly;
+    margin: 2rem 0 1rem 0;
+}
+
+.signup-form h1 {
+    color: #fafafa;
+    margin: 0.8rem;
+}
+
+.signup-form a:visited{
+    color: #fafafa;
 }
 
 
@@ -202,6 +243,19 @@ main {
     background-color: var(--light-primary);
     border-radius: 0 30px 30px 0;
     margin-right: 0.6rem;
+}
+
+.no-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 100%;
+}
+
+.no-content > img {
+    max-width: 50%;
 }
 
 
@@ -293,7 +347,7 @@ main {
         margin: unset;
     }
 
-    main {
+    main > div {
         margin: 0.5rem;
     }
 

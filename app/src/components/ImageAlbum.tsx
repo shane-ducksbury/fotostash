@@ -89,15 +89,16 @@ const ImageAlbum = ({ imageAlbum, refetch, albumName }: Props) => {
                 {allPhotoDates && !albumName ? 
                 allPhotoDates.map(date => {
                     return (
-                        <>
+                        <div key={date}>
                         <h2>{date}</h2>
                         <AlbumImageList 
                             allPhotos={allPhotos}
                             date={date}
                             getImageDateTime={getImageDateTime}
                             handleModalOpen={handleModalOpen}
+                            
                             />
-                        </>
+                        </div>
                     )})
                 :                         
                 <AlbumImageList 
