@@ -8,7 +8,8 @@ type Props = {
     imageId: string;
 }
 
-const API_ENDPOINT = "http://localhost:5050"
+const { REACT_APP_API_URL } = process.env
+const API_URL = REACT_APP_API_URL
 
 const AddToAlbum = ({imageId}: Props) => {
     const [albums, setAlbums] = useState<Album[]>();
@@ -17,7 +18,7 @@ const AddToAlbum = ({imageId}: Props) => {
 
     useEffect(() => {
         if(open){
-            axios.get(API_ENDPOINT + '/albums/')
+            axios.get(API_URL + '/albums/')
             .then(response => setAlbums(response.data))
         }
     },[open])
@@ -32,7 +33,7 @@ const AddToAlbum = ({imageId}: Props) => {
 
     const addToAlbum = (albumId: string, imageId: string) => {
         axios.post(
-            API_ENDPOINT + '/albums/' + albumId + '/add-image',
+            API_URL + '/albums/' + albumId + '/add-image',
             {"imageId": imageId}
             )
         handleClose();

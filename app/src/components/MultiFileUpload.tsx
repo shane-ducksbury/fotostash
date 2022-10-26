@@ -25,6 +25,8 @@ const MultiFileUpload = () => {
     const [currentIndex, setCurrentIndex] = useState<number>(0);
     const [filesLength, setFilesLength] = useState<number>(0);
 
+    const [fileDragOver, setFileDragOver] = useState<boolean>(false);
+
     
     const handleFileSubmit = async (file: File) => {
         const formData = new FormData();
@@ -74,9 +76,13 @@ const MultiFileUpload = () => {
         <>
             {erroredFiles.length > 0 ? <p>The following files failed to upload {erroredFiles.map(file => {return(file + ', ')})} </p> : null}
                 {progress === 0 
-                ? <div {...getRootProps({className: 'dropzone'})} >
+                ? <div {...getRootProps({className: 'dropzone'})} onDragOver={(e) => setFileDragOver(true)} onDragLeave={e => setFileDragOver(false)} >
                     <input {...getInputProps()} />
+                    {
+                        fileDragOver ? <h1>Release to upload</h1> 
+                        :
                     <h1>Drop Images Anywhere to Upload, Or Click to Add</h1>                    
+                    }
                 </div>
                 : <UploadProgressBar 
                 progress={progress} 

@@ -9,13 +9,16 @@ type Props = {
     iconSize?: number;
 }
 
-const API_ENDPOINT = "http://localhost:5050"
+const { REACT_APP_API_URL } = process.env
+const API_URL = REACT_APP_API_URL
 
 const SendToTrashButton = ({ imageId, handleForceParentRerender }: Props) => {
 
+    
+
     const handleTrashImage = () => {
         axios.patch(
-            API_ENDPOINT + '/images/' + imageId,
+            API_URL + '/images/' + imageId,
             {"deleted": true}
             )
         

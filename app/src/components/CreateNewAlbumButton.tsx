@@ -7,7 +7,8 @@ type Props = {
     setParentToStaleCallback: () => void; 
 }
 
-const API_ENDPOINT = "http://localhost:5050"
+const { REACT_APP_API_URL } = process.env
+const API_URL = REACT_APP_API_URL
 
 const CreateNewAlbumButton = ({ setParentToStaleCallback }: Props) => {
     const [open, setOpen] = useState<boolean>(false);
@@ -24,7 +25,7 @@ const CreateNewAlbumButton = ({ setParentToStaleCallback }: Props) => {
 
     const handleSubmit = () => {
         axios.post(
-            API_ENDPOINT + "/albums/",
+            API_URL + "/albums/",
             {"name": textContent}
             )
         setParentToStaleCallback();

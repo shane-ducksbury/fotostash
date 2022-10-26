@@ -9,7 +9,7 @@ type Props = {
 const CloseLightboxButton = ({ handleCloseModal }: Props) => {
     return (
         <div>
-            <Tooltip title='Add to Album'>
+            <Tooltip title='Back'>
                 <IconButton
                     id="basic-button"
                     onClick={handleCloseModal}

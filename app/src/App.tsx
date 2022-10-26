@@ -57,8 +57,7 @@ const App = () => {
                         <Route path="/" element={<AllPhotos />} />
                         <Route path="/albums" element={<Albums />} />
                         <Route path="/albums/:albumId" element={<SingleAlbum />} />
-                        <Route path="/upload" element={<Upload />} />
-                        <Route path="/dev-upload" element={<MultiFileUpload />} />
+                        <Route path="/upload" element={<MultiFileUpload />} />
                         <Route path="/trash" element={<Trash />} />
                     </Route>
                     <Route path="/login" element={<Login validateUser={validateUser} userValid={userValid} />} />

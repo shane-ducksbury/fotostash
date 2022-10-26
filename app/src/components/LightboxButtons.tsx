@@ -13,11 +13,15 @@ type Props = {
 
 const LightboxButtons = ({image, handleForceParentRerender, handleCloseModal}: Props) => {
     return (
-    <div className="lightbox-controls">
-        <SendToTrashButton imageId={image.id} handleForceParentRerender={handleForceParentRerender} />
-        <AddToAlbum imageId={image.id} />
-        <CloseLightboxButton handleCloseModal={handleCloseModal} />
-    </div>
+        <>
+            <div className="lightbox-controls">
+                <CloseLightboxButton handleCloseModal={handleCloseModal} />
+                <div>
+                    <SendToTrashButton imageId={image.id} handleForceParentRerender={handleForceParentRerender} />
+                    <AddToAlbum imageId={image.id} />
+                </div>
+            </div>
+        </>
     )
 }
 

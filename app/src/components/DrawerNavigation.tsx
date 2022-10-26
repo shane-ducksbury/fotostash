@@ -46,7 +46,6 @@ const DrawerNavigation = (props: DrawerNavigationProps) => {
             <NavButtonWithIcon icon={<IoTrashBin size={'1.5rem'} />} iconText={'Trash'} showIconText={showText} linkLocation={'/trash'} currentPath={currentPath} />
             <NavButtonWithIcon icon={<IoSettings size={'1.5rem'} />} iconText={'Account'} showIconText={showText} linkLocation={'/account'} currentPath={currentPath} />
             <NavButtonWithIcon icon={<IoLogOut size={'1.5rem'} />} iconText={'Logout'} showIconText={showText} linkLocation={'/logout'} currentPath={currentPath} />
-            <NavButtonWithIcon icon={<IoCloudUpload size={'1.5rem'} />} iconText={'WIP Upload'} showIconText={showText} linkLocation={'/dev-upload'} currentPath={currentPath} />
             </>
         )
     }
@@ -57,7 +56,7 @@ const DrawerNavigation = (props: DrawerNavigationProps) => {
             <List className={windowSize.innerWidth > 800 ? 'nav-desktop' : 'nav-mobile'}>
                 <NavButtonWithIcon icon={<IoImage size={'1.5rem'} />} iconText={'Photos'} showIconText={showText} linkLocation={'/'} currentPath={currentPath}/>
                 <NavButtonWithIcon icon={<IoAlbums size={'1.5rem'} />} iconText={'Albums'} showIconText={showText} linkLocation={'/albums'} currentPath={currentPath}/>
-                <NavButtonWithIcon icon={<IoCloudUpload size={'1.5rem'} />} iconText={'Upload'} showIconText={showText} linkLocation={'/upload'} currentPath={currentPath}/>
+                <NavButtonWithIcon icon={<IoCloudUpload size={'1.5rem'} />} iconText={'Upload'} showIconText={showText} linkLocation={'/upload'} currentPath={currentPath} />
                 {!showText ? 
                 <NavButtonWithIcon icon={<IoEllipsisVertical size={'1.5rem'}/>} iconText={'More'} showIconText={showText} currentPath={currentPath}/>
                 : getDesktopNavItems()
