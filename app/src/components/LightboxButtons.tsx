@@ -22,8 +22,8 @@ const LightboxButtons = ({image, handleForceParentRerender, handleCloseModal}: P
             <div className="lightbox-controls">
                 <CloseLightboxButton handleCloseModal={handleCloseModal} />
                 <div>
-                    <SendToTrashButton imageId={image.id} handleForceParentRerender={handleForceParentRerender} />
-                    {albumId ? <RemoveFromAlbumButton imageId={image.id} albumId={albumId} /> : <AddToAlbum imageId={image.id} />}
+                    <SendToTrashButton images={[image]} handleForceParentRerender={handleForceParentRerender} color={'#FAFAFA'} />
+                    {albumId ? <RemoveFromAlbumButton imageId={image.id} albumId={albumId} /> : <AddToAlbum images={[image]} color={'#FAFAFA'} />}
                 </div>
             </div>
         </>

@@ -1,9 +1,13 @@
 import React, { ReactNode, useEffect, useState } from 'react'
-import { Modal } from '@mui/material';
+import { Button, IconButton, Modal, Tooltip } from '@mui/material';
 import AlbumLightbox from './AlbumLightbox';
 
 import Image from '../interfaces/Image'
 import AlbumImageList from './AlbumImageList';
+import AddToAlbum from './AddToAlbum';
+import SendToTrashButton from './SendToTrashButton';
+import { IoClose } from 'react-icons/io5';
+import RestoreFromTrashButton from './RestoreFromTrashButton';
 
 type Props = {
     imageAlbum: Image[];
@@ -19,6 +23,8 @@ const ImageAlbum = ({ imageAlbum, refetch, albumName, albumAction }: Props) => {
     const [modalOpen, setModalOpen] = useState(false);
     const [selectedImage, setSelectedImage] = useState<Image | null>(null);
     const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0);
+    const [selectedImages, setSelectedImages] = useState<Image[]>([]);
+    const [clearSelection, setClearSelection] = useState<boolean>(false);
     const useAlbumName = albumName ?? 'All Photos';
 
     const getImageDateTimeEpoch = (dateTime: string) => {
@@ -50,6 +56,16 @@ const ImageAlbum = ({ imageAlbum, refetch, albumName, albumAction }: Props) => {
         setModalOpen(false);
     }
 
+    const addImageToSelection = (image: Image) => {
+        const foundImage = selectedImages.find(i => i.id === image.id);
+        if(foundImage) return;
+        setSelectedImages([...selectedImages, image])
+    }
+
+    const removeImageFromSelection = (image: Image) => {
+        setSelectedImages(selectedImages.filter(i => i.id !== image.id))
+    }
+
     const handleImageChange = (direction: number) => {
         const image = allPhotos.at(selectedImageIndex + direction);
         if(!image) return
@@ -78,12 +94,50 @@ const ImageAlbum = ({ imageAlbum, refetch, albumName, albumAction }: Props) => {
 
     const getPhotoDateSubtitle = () => {
         if(!albumName) return;
+        if(albumName === 'Trash') return;
         if(allPhotoDates.length < 2) return
         const firstImage = allPhotos.at(0)?.dateTime
         const lastImage = allPhotos.at(-1)?.dateTime
         if(!firstImage || !lastImage) return
         return(
             <p>{getImageDateTime(lastImage).toDateString()} - {getImageDateTime(firstImage).toDateString() }</p>
+        )
+    }
+
+    const updateClearSelection = () => {
+        setSelectedImages([]);
+        setClearSelection(true);
+    }
+
+    // This is required as I need to toggle and wait for the state to drill down into the children
+    // before setting back to true. Seems like a code smell, will need to fix later.
+    useEffect(() => {
+        if(clearSelection){
+            setClearSelection(false);
+        }
+    }, [clearSelection])
+
+    const getImageSelectionActions = () => {
+        return(
+            <div className='image-selection-actions'>
+                <div>
+                    <Tooltip title='Clear Selection'>
+                        <IconButton onClick={() => { updateClearSelection() }}><IoClose /></IconButton>
+                    </Tooltip>
+                    <h3>{selectedImages.length} selected</h3>
+                </div>
+                <div>
+                    {!albumName ? 
+                    <AddToAlbum images={selectedImages} color={'#344240'} clearSelectionCallback={updateClearSelection} />
+                    : null}
+                    {
+                        albumName === 'Trash' ? 
+                        <RestoreFromTrashButton images={selectedImages} color={'#344240'} clearSelectionCallback={updateClearSelection}  />
+                        :
+                        <SendToTrashButton images={selectedImages} color={'#344240'} clearSelectionCallback={updateClearSelection} />
+                    }
+                </div>
+            </div>
         )
     }
     
@@ -95,22 +149,29 @@ const ImageAlbum = ({ imageAlbum, refetch, albumName, albumAction }: Props) => {
 
     return (
         <div>
-            <h1>{useAlbumName}</h1>
-            {getPhotoDateSubtitle()}
-            {albumAction ? albumAction : null}
+            <div className='image-album-header'>
+                {selectedImages.length > 0 ? getImageSelectionActions() :                
+                <div>
+                    <h1>{useAlbumName}</h1>
+                    {getPhotoDateSubtitle()}
+                </div>}
+                {albumAction && selectedImages.length < 1 ? albumAction : null}
+            </div>
 
             <div className='album-wrapper'>
                 {allPhotoDates && !albumName ? 
                 allPhotoDates.map(date => {
                     return (
                         <div key={date}>
-                        <h2>{date}</h2>
+                        <h3>{date}</h3>
                         <AlbumImageList 
                             allPhotos={allPhotos}
                             date={date}
                             getImageDateTime={getImageDateTime}
                             handleModalOpen={handleModalOpen}
-                            
+                            addImageToSelection={addImageToSelection}
+                            removeImageFromSelection={removeImageFromSelection}
+                            clearSelection={clearSelection}
                             />
                         </div>
                     )})
@@ -119,6 +180,9 @@ const ImageAlbum = ({ imageAlbum, refetch, albumName, albumAction }: Props) => {
                     allPhotos={allPhotos}
                     getImageDateTime={getImageDateTime}
                     handleModalOpen={handleModalOpen}
+                    addImageToSelection={addImageToSelection}
+                    removeImageFromSelection={removeImageFromSelection}
+                    clearSelection={clearSelection}
                 />}
             </div>
 

@@ -8,9 +8,12 @@ type Props = {
     date?: string;
     getImageDateTime: (dateTime: string) => Date;
     handleModalOpen: (image: Image, index: number) => void;
+    addImageToSelection: (image: Image) => void;
+    removeImageFromSelection: (image: Image) => void;
+    clearSelection: boolean;
 }
 
-const AlbumImageList = ({ allPhotos, date, getImageDateTime, handleModalOpen }: Props) => {
+const AlbumImageList = ({ allPhotos, date, getImageDateTime, handleModalOpen, addImageToSelection, removeImageFromSelection, clearSelection }: Props) => {
 
     const getWindowSize = () => {
         const {innerWidth, innerHeight} = window;
@@ -64,7 +67,15 @@ const AlbumImageList = ({ allPhotos, date, getImageDateTime, handleModalOpen }: 
                 if(date){
                     if(getImageDateTime(item.dateTime).toDateString() === date){
                         return(
-                            <AlbumImage key={item.id} image={item} index={index} handleModalOpen={handleModalOpen} />
+                            <AlbumImage 
+                            key={item.id} 
+                            image={item} 
+                            index={index} 
+                            handleModalOpen={handleModalOpen} 
+                            addImageToSelection={addImageToSelection}
+                            removeImageFromSelection={removeImageFromSelection}
+                            clearSelection={clearSelection}
+                            />
                         )
                     }
                 }
@@ -77,7 +88,15 @@ const AlbumImageList = ({ allPhotos, date, getImageDateTime, handleModalOpen }: 
         <ImageList cols={numberOfCols} rowHeight={previewHeight}>
             {allPhotos.map((item: Image, index: number) => {
                 return(
-                    <AlbumImage key={item.id} image={item} index={index} handleModalOpen={handleModalOpen} />
+                    <AlbumImage 
+                        key={item.id} 
+                        image={item} 
+                        index={index} 
+                        handleModalOpen={handleModalOpen} 
+                        addImageToSelection={addImageToSelection}
+                        removeImageFromSelection={removeImageFromSelection}
+                        clearSelection={clearSelection}
+                    />
                 )
             })}
         </ImageList>

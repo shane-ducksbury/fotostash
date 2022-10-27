@@ -3,15 +3,18 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { IoAdd, IoAlbumsOutline } from "react-icons/io5";
 import Album from "../interfaces/Album";
+import Image from "../interfaces/Image";
 
 type Props = {
-    imageId: string;
+    images: Image[];
+    color: string;
+    clearSelectionCallback?: () => void;
 }
 
 const { REACT_APP_API_URL } = process.env
 const API_URL = REACT_APP_API_URL
 
-const AddToAlbum = ({imageId}: Props) => {
+const AddToAlbum = ({ images, color, clearSelectionCallback }: Props) => {
     const [albums, setAlbums] = useState<Album[]>();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
@@ -29,13 +32,18 @@ const AddToAlbum = ({imageId}: Props) => {
 
     const handleClose = () => {
         setAnchorEl(null);
+        if(clearSelectionCallback){
+            clearSelectionCallback();
+        }
       };
 
-    const addToAlbum = (albumId: string, imageId: string) => {
-        axios.post(
-            API_URL + '/albums/' + albumId + '/add-image',
-            {"imageId": imageId}
-            )
+    const addToAlbum = (albumId: string, images: Image[]) => {
+        images.forEach(i => {
+            axios.post(
+                API_URL + '/albums/' + albumId + '/add-image',
+                {"imageId": i.id}
+                )
+            })
         handleClose();
     }
 
@@ -49,7 +57,7 @@ const AddToAlbum = ({imageId}: Props) => {
                     aria-expanded={open ? 'true' : undefined}
                     onClick={handleClick}
                 >
-                    <IoAlbumsOutline color="#FAFAFA" />
+                    <IoAdd color={color}/>
                 </IconButton>
             </Tooltip>
             <Menu
@@ -63,7 +71,7 @@ const AddToAlbum = ({imageId}: Props) => {
             >
                 {albums ? 
                 albums.map(album => {
-                    return(<MenuItem onClick={() => addToAlbum(album.id, imageId)}>{album.name}</MenuItem>)
+                    return(<MenuItem key={album.id} onClick={() => addToAlbum(album.id, images)}>{album.name}</MenuItem>)
                     }) 
                 : <MenuItem onClick={() => {return(null)}}>Create New Album</MenuItem>}
             </Menu>
