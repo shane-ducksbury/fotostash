@@ -48,4 +48,10 @@ export class AlbumsController {
   remove(@Param('id') id: string, @Request() req) {
     return this.albumsService.delete(id, req.user.id);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete(':id/:imageId')
+  removeImageFromAlbum(@Param('id') albumId: string, @Param('imageId') imageId: string, @Request() req){
+    this.albumsService.removeImageFromAlbum(albumId, imageId, req.user.id);
+  }
 }

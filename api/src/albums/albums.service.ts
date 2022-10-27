@@ -80,6 +80,17 @@ export class AlbumsService {
     album.images.push(imageToAdd);
     // Bug here, can return duplicates. Either should return something else, or
     // do a query after the save has happened.
-    return await this.albumsRepository.save(album)
+    return await this.albumsRepository.save(album);
+  }
+
+  async removeImageFromAlbum(albumId: string, imageId: string, userId: string){
+    const album: Album = await this.findOne(albumId, userId);
+    const foundImage: Image = await this.imagesService.getImageFromDatabase(imageId, userId);
+
+    // Bug here.
+    if(!album || !foundImage) return new HttpException('The album or image does not exist', HttpStatus.NOT_FOUND);
+
+    album.images = album.images.filter(image => image.id !== imageId);
+    return await this.albumsRepository.save(album);
   }
 }

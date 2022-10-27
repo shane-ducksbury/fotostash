@@ -21,14 +21,14 @@ const ImageAlbum = ({ imageAlbum, refetch, albumName }: Props) => {
     const useAlbumName = albumName ?? 'All Photos';
 
     const getImageDateTimeEpoch = (dateTime: string) => {
-        const fixedDate = dateTime.split(' ')[0].replace(/:/g,'-');
+        const fixedDate = dateTime.split(' ')[0].replace(/:/g,'/');
         const time = dateTime.split(' ')[1];
         const date = Date.parse(`${fixedDate} ${time}`);
         return date;
     }
 
     const getImageDateTime = (dateTime: string) => {
-        const fixedDate = dateTime.split(' ')[0].replace(/:/g,'-');
+        const fixedDate = dateTime.split(' ')[0].replace(/:/g,'/');
         const time = dateTime.split(' ')[1];
         const date = new Date(`${fixedDate} ${time}`);
         return date;
@@ -74,6 +74,17 @@ const ImageAlbum = ({ imageAlbum, refetch, albumName }: Props) => {
         })
         setAllPhotoDates(imageDates);
     }
+
+    const getPhotoDateSubtitle = () => {
+        if(!albumName) return;
+        if(allPhotoDates.length < 2) return
+        const firstImage = allPhotos.at(0)?.dateTime
+        const lastImage = allPhotos.at(-1)?.dateTime
+        if(!firstImage || !lastImage) return
+        return(
+            <p>{getImageDateTime(lastImage).toDateString()} - {getImageDateTime(firstImage).toDateString() }</p>
+        )
+    }
     
     useEffect(() => {
         getPhotoDates();
@@ -84,9 +95,10 @@ const ImageAlbum = ({ imageAlbum, refetch, albumName }: Props) => {
     return (
         <div>
             <h1>{useAlbumName}</h1>
+            {getPhotoDateSubtitle()}
 
             <div className='album-wrapper'>
-                {allPhotoDates && !albumName ? 
+                {allPhotoDates && (!albumName) ? 
                 allPhotoDates.map(date => {
                     return (
                         <div key={date}>

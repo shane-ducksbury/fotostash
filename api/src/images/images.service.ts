@@ -28,14 +28,17 @@ export class ImagesService {
         .getMany()
     }
 
-    async getById(imageId: string, userId: string): Promise<Image> {
-        const image = 
-        await this.imagesRepository
-            .createQueryBuilder('image')
-            .where('id = :imageId and imageOwnerId = :userId', {imageId: imageId, userId: userId})
-            .getOne()
+    async getImageFromDatabase(imageId: string, userId: string): Promise<Image> {
+        return this.imagesRepository
+        .createQueryBuilder('image')
+        .where('id = :imageId and imageOwnerId = :userId', {imageId: imageId, userId: userId})
+        .getOne()
+    }
 
-        if (!image)throw new NotFoundException();
+    async getById(imageId: string, userId: string): Promise<Image> {
+        const image = this.getImageFromDatabase(imageId, userId);
+        
+        if (!image) throw new HttpException('Image not found', HttpStatus.NOT_FOUND)
 
         return image;
     }

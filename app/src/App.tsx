@@ -19,6 +19,19 @@ import AllPhotos from './views/AllPhotos';
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import Loading from './views/Loading';
+import { createTheme, ThemeProvider } from '@mui/material';
+
+const theme = createTheme({
+    palette: {
+      primary: {
+        main: "#2DB79D"
+      },
+      secondary: {
+        main: "#393C8E"
+      }
+    }
+  });
+
 
 const App = () => {
     const [userValid, setUserValid] = useState<boolean>(false);
@@ -47,6 +60,7 @@ const App = () => {
     }
 
     return (
+        <ThemeProvider theme={theme}>
         <div className="App">
         {userValid ? <DrawerNavigation /> : null}
             <main>
@@ -66,6 +80,7 @@ const App = () => {
                 </Routes>
             </main>
         </div>
+        </ThemeProvider>
     );
 }
 

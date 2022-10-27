@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Request, NotFoundException, Param, Patch, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Request, NotFoundException, Param, Patch, Post, UploadedFile, UseGuards, UseInterceptors, HttpException, HttpStatus } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags, ApiCreatedResponse, ApiOkResponse, ApiNotFoundResponse } from '@nestjs/swagger'
 
@@ -33,7 +33,11 @@ export class ImagesController {
   @UseGuards(JwtAuthGuard)
   @Get(':id')
   getImageById(@Param('id') id: string, @Request() req): Promise<Image> { 
-    return this.imagesService.getById(id, req.user.id);    
+    try{
+      return this.imagesService.getById(id, req.user.id);    
+    } catch(err){
+      throw new HttpException('Image not found', HttpStatus.NOT_FOUND)
+    }
   }
 
   @ApiOkResponse()

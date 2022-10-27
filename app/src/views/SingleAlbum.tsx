@@ -3,6 +3,7 @@ import axios from "axios";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import ImageAlbum from "../components/ImageAlbum";
+import SessionTimeout from "../components/SessionTimeout";
 import Loading from "./Loading";
 
 const { REACT_APP_API_URL } = process.env
@@ -17,7 +18,7 @@ const SingleAlbum = () => {
         return res.data
     }
 
-    const { data, status, refetch } = useQuery('albumImages', getAlbumImages, {refetchOnMount: true});
+    const { data, status, refetch } = useQuery('albumImages', getAlbumImages, {refetchOnMount: true, refetchOnWindowFocus: true});
 
     const refetchData = () => {
         refetch();
@@ -28,6 +29,11 @@ const SingleAlbum = () => {
                 <ImageAlbum imageAlbum={data.images} refetch={refetchData} albumName={data.name} />
             )
         }
+    if(status === 'error') {
+        return (
+            <SessionTimeout />
+        )
+    }
     return <Loading />
 
 }

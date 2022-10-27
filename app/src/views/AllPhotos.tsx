@@ -3,6 +3,8 @@ import ImageAlbum from '../components/ImageAlbum'
 import { useQuery } from 'react-query'
 import axios from 'axios'
 import Loading from './Loading'
+import { Navigate } from 'react-router-dom'
+import SessionTimeout from '../components/SessionTimeout'
 
 const { REACT_APP_API_URL } = process.env
 const API_URL = REACT_APP_API_URL
@@ -36,6 +38,11 @@ const AllPhotos = (props: Props) => {
                 )
         }
         }
+    if(status === 'error') {
+        return (
+            <SessionTimeout />
+        )
+    }
     return <Loading />
 
 }
