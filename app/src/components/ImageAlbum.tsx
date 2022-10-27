@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { ReactNode, useEffect, useState } from 'react'
 import { Modal } from '@mui/material';
 import AlbumLightbox from './AlbumLightbox';
 
@@ -9,9 +9,10 @@ type Props = {
     imageAlbum: Image[];
     refetch: () => void;
     albumName?: string;
+    albumAction?: ReactNode;
 }
 
-const ImageAlbum = ({ imageAlbum, refetch, albumName }: Props) => {
+const ImageAlbum = ({ imageAlbum, refetch, albumName, albumAction }: Props) => {
     // This component has become quite large and should be broken down at some point
     const [allPhotos, setAllPhotos] = useState<Image[]>(imageAlbum);
     const [allPhotoDates, setAllPhotoDates] = useState<string[]>([]);
@@ -96,9 +97,10 @@ const ImageAlbum = ({ imageAlbum, refetch, albumName }: Props) => {
         <div>
             <h1>{useAlbumName}</h1>
             {getPhotoDateSubtitle()}
+            {albumAction ? albumAction : null}
 
             <div className='album-wrapper'>
-                {allPhotoDates && (!albumName) ? 
+                {allPhotoDates && !albumName ? 
                 allPhotoDates.map(date => {
                     return (
                         <div key={date}>
