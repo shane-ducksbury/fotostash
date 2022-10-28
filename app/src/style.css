@@ -76,7 +76,7 @@ main > div {
     position: sticky;
     top: 0;
     z-index: 2;
-    background-color: #FAFAFA;
+    background-color: #fafafa;
     border-bottom: 1px solid var(--light-grey);
     display: flex;
     align-items: center;
@@ -436,5 +436,10 @@ main > div {
 
     .album-preview-tiled {
         flex: 48%;
+    }
+
+    .image-album-header {
+        padding-top: 1.2rem;
+        top: 1.2rem;
     }
 }
