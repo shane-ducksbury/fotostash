@@ -31,6 +31,17 @@ services:
       exit 0;
       "
   
+  app:
+    image: ghcr.io/shane-ducksbury/fotostash-app:latest
+    ports: 
+      - "3000:3000"
+  
+  api:
+    image: ghcr.io/shane-ducksbury/fotostash-api:latest
+    ports:
+      - "5050:5050"
+
+
 ## By default this config uses default local driver,
 ## For custom volumes replace with volume driver configuration.
 volumes:
