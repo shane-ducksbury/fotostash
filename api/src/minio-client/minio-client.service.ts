@@ -28,22 +28,26 @@ export class MinioClientService {
         };
         
 
-        this.client.putObject(
-            bucketName,
-            fileName,
-            file.buffer,
-            metaData,
-            function (err, res) {
-              if (err) {
-                throw new HttpException(
-                  'Error uploading file',
-                  HttpStatus.BAD_REQUEST,
-                );
-              }
-            },
-          );
+        try{
+          this.client.putObject(
+              bucketName,
+              fileName,
+              file.buffer,
+              metaData,
+              function (err, res) {
+                if (err) {
+                  throw new HttpException(
+                    'Error uploading file',
+                    HttpStatus.BAD_REQUEST,
+                  );
+                }
+              },
+            );
+            return `${process.env.MINIO_ENDPOINT}:${process.env.MINIO_PORT}/${process.env.MINIO_BUCKET_NAME}/${fileName}`;
+        } catch (err){
+          console.log(err)
+        }
         
-        return `${process.env.MINIO_ENDPOINT}:${process.env.MINIO_PORT}/${process.env.MINIO_BUCKET_NAME}/${fileName}`;
     }
 
 }
