@@ -36,10 +36,11 @@ export class MinioClientService {
               metaData,
               function (err, res) {
                 if (err) {
-                  throw new HttpException(
-                    'Error uploading file',
-                    HttpStatus.BAD_REQUEST,
-                  );
+                  console.log(err)
+                  // throw new HttpException(
+                  //   'Error uploading file',
+                  //   HttpStatus.BAD_REQUEST,
+                  // );
                 }
               },
             );
