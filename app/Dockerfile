@@ -1,4 +1,4 @@
-FROM --platform=arm64 node:18-alpine
+FROM node:18-alpine
 WORKDIR /usr/src/app
 # Issue here is that CRA builds for static pages - meaning ENV's can't be accessed
 # There is a fix here - but need to implement it.

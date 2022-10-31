@@ -1,4 +1,4 @@
-FROM --platform=arm64 node:18-alpine
+FROM node:18-alpine
 WORKDIR /usr/src/app
 ENV PORT=5050
 ENV MINIO_ENDPOINT=localhost

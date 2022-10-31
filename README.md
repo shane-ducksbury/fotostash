@@ -1,5 +1,7 @@
 # fotostash
-fotostash is a minimal, self-hostable photo album. The package is wrapped in docker for easy deployment.
+fotostash is a minimal, self-hostable photo album.
+
+![screenshot of fotostash](https://github.com/shane-ducksbury/fotostash/fotostash-screenshot.png "A screenshot of fotostash")
 
 ### Features
 - Individual User Accounts
@@ -9,11 +11,7 @@ fotostash is a minimal, self-hostable photo album. The package is wrapped in doc
 - Create Albums of your favourite photos
 
 ### Setup
-To install on Docker, use the a docker-compose file:
-
-    To Do, add the code here.
-
-
+To install on Docker, use the docker-compose file from the docker container. N.B this is currently slightly broken until an override is worked out for the API url.
 
 ### Running for local development
 API
