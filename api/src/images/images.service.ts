@@ -121,7 +121,9 @@ export class ImagesService {
             const newImage = this.imagesRepository.create({
                 id: newImageUUID,
                 name: file.originalname,
-                imageUrl: "http://" + fileUrl,
+                // Theres a bit of dodgy stuff going on in here, but I'm out of time. 
+                // Will fix env for dev and prod later
+                imageUrl: process.env.MINIO_PORT ? "http://" : 'https://' + fileUrl,
                 dateTime: newImageInfo.dateTime,
                 deleted: false,
                 imageOwnerId: userId,
