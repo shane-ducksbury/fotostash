@@ -1,7 +1,7 @@
 # fotostash
 fotostash is a minimal, self-hostable photo album.
 
-![screenshot of fotostash](https://github.com/shane-ducksbury/fotostash/fotostash-screenshot.png "A screenshot of fotostash")
+![screenshot of fotostash](https://github.com/shane-ducksbury/fotostash/blob/main/fotostash-screenshot.png?raw=true "A screenshot of fotostash")
 
 ### Features
 - Individual User Accounts
