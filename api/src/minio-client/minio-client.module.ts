@@ -11,7 +11,7 @@ import { MinioClientService } from './minio-client.service';
       useFactory: async (configService: ConfigService) => ({
         endPoint: configService.get('MINIO_ENDPOINT'),
         port: parseInt(configService.get('MINIO_PORT')),
-        useSSL: true,
+        useSSL: false,
         accessKey: configService.get('MINIO_ACCESS_KEY'),
         secretKey: configService.get('MINIO_SECRET_KEY')
       }),

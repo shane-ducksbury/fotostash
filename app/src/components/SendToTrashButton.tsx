@@ -2,6 +2,7 @@ import { IconButton, Tooltip } from '@mui/material'
 import axios from 'axios';
 import React from 'react'
 import { IoTrashBin } from 'react-icons/io5';
+import { useQueryClient } from 'react-query';
 import Image from '../interfaces/Image';
 
 type Props = {
@@ -15,16 +16,18 @@ type Props = {
 const { REACT_APP_API_URL } = process.env
 const API_URL = REACT_APP_API_URL
 
-const SendToTrashButton = ({ images, handleForceParentRerender, color }: Props) => {
+const SendToTrashButton = ({ images, handleForceParentRerender, clearSelectionCallback, color }: Props) => {
 
     const handleTrashImage = () => {
-        images?.forEach(image => {
+        images?.forEach( image => {
             axios.patch(
                 API_URL + '/images/' + image.id,
                 {"deleted": true}
                 )
         })
-        // handleForceParentRerender();
+        if(clearSelectionCallback){
+            clearSelectionCallback();
+        };
     }
 
     return (

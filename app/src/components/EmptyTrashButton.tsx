@@ -1,6 +1,7 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import axios from 'axios';
 import React, { useState } from 'react'
+import { useQueryClient } from 'react-query';
 
 type Props = {}
 
@@ -9,10 +10,12 @@ const API_URL = REACT_APP_API_URL
 
 const EmptyTrashButton = (props: Props) => {
     const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+    const queryClient = useQueryClient();
 
     const emptyTrashHandler = () => {
         emptyTrash();
         setDialogOpen(false);
+        queryClient.invalidateQueries('imageTrash');
     }
 
     const emptyTrash = async () => {

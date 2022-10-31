@@ -8,15 +8,17 @@ import AddToAlbum from './AddToAlbum';
 import SendToTrashButton from './SendToTrashButton';
 import { IoClose } from 'react-icons/io5';
 import RestoreFromTrashButton from './RestoreFromTrashButton';
+import { useQueries, useQueryClient } from 'react-query';
 
 type Props = {
     imageAlbum: Image[];
     refetch: () => void;
     albumName?: string;
     albumAction?: ReactNode;
+    albumQuery?: string;
 }
 
-const ImageAlbum = ({ imageAlbum, refetch, albumName, albumAction }: Props) => {
+const ImageAlbum = ({ imageAlbum, refetch, albumName, albumAction, albumQuery }: Props) => {
     // This component has become quite large and should be broken down at some point
     const [allPhotos, setAllPhotos] = useState<Image[]>(imageAlbum);
     const [allPhotoDates, setAllPhotoDates] = useState<string[]>([]);
@@ -26,6 +28,14 @@ const ImageAlbum = ({ imageAlbum, refetch, albumName, albumAction }: Props) => {
     const [selectedImages, setSelectedImages] = useState<Image[]>([]);
     const [clearSelection, setClearSelection] = useState<boolean>(false);
     const useAlbumName = albumName ?? 'All Photos';
+
+    const queryClient = useQueryClient();
+    
+    useEffect(() => {
+        setAllPhotos(imageAlbum);
+        sortPhotos();
+        getPhotoDates();
+    },[imageAlbum])
 
     const getImageDateTimeEpoch = (dateTime: string) => {
         const fixedDate = dateTime.split(' ')[0].replace(/:/g,'/');
@@ -43,7 +53,7 @@ const ImageAlbum = ({ imageAlbum, refetch, albumName, albumAction }: Props) => {
 
     const refetchImages = () => {
         setModalOpen(false);
-        refetch();
+        queryClient.fetchQuery('allPhotos');
     }
 
     const handleModalOpen = (image: Image, index: number) => {
@@ -54,6 +64,7 @@ const ImageAlbum = ({ imageAlbum, refetch, albumName, albumAction }: Props) => {
 
     const handleModalClose = () => {
         setModalOpen(false);
+        queryClient.fetchQuery('allPhotos');
     }
 
     const addImageToSelection = (image: Image) => {
@@ -107,6 +118,7 @@ const ImageAlbum = ({ imageAlbum, refetch, albumName, albumAction }: Props) => {
     const updateClearSelection = () => {
         setSelectedImages([]);
         setClearSelection(true);
+        queryClient.fetchQuery('allPhotos');
     }
 
     // This is required as I need to toggle and wait for the state to drill down into the children
@@ -146,58 +158,70 @@ const ImageAlbum = ({ imageAlbum, refetch, albumName, albumAction }: Props) => {
         sortPhotos();
     },[])
 
-
-    return (
-        <div>
-            <div className='image-album-header'>
-                {selectedImages.length > 0 ? getImageSelectionActions() :                
-                <div>
-                    <h1>{useAlbumName}</h1>
-                    {getPhotoDateSubtitle()}
-                </div>}
-                {albumAction && selectedImages.length < 1 ? albumAction : null}
-            </div>
-
-            <div className='album-wrapper'>
-                {allPhotoDates && !albumName ? 
-                allPhotoDates.map(date => {
-                    return (
-                        <div key={date}>
-                        <h3>{date}</h3>
-                        <AlbumImageList 
-                            allPhotos={allPhotos}
-                            date={date}
-                            getImageDateTime={getImageDateTime}
-                            handleModalOpen={handleModalOpen}
-                            addImageToSelection={addImageToSelection}
-                            removeImageFromSelection={removeImageFromSelection}
-                            clearSelection={clearSelection}
-                            />
-                        </div>
-                    )})
-                :                         
-                <AlbumImageList 
-                    allPhotos={allPhotos}
-                    getImageDateTime={getImageDateTime}
-                    handleModalOpen={handleModalOpen}
-                    addImageToSelection={addImageToSelection}
-                    removeImageFromSelection={removeImageFromSelection}
-                    clearSelection={clearSelection}
-                />}
-            </div>
-
-            <Modal open={modalOpen} onClose={handleModalClose}>
-                <>
-                <AlbumLightbox 
-                image={selectedImage} 
-                handleImageChange={handleImageChange}
-                handleForceParentRerender={refetchImages}
-                handleCloseModal={handleModalClose}
-                />
-                </>
-            </Modal>
+    if(imageAlbum.length < 1){
+        return(               
+        <div className='no-content'>
+            <img src="img/organize-photo.svg" alt="" />
+            <h2>Looks like this album is empty. Add some photos from the All Photos page.</h2>
         </div>
     )
+    }
+    else {
+        return (
+            <div>
+                <div className='image-album-header'>
+                    {selectedImages.length > 0 ? getImageSelectionActions() :                
+                    <div>
+                        <h1>{useAlbumName}</h1>
+                        {getPhotoDateSubtitle()}
+                    </div>}
+                    {albumAction && selectedImages.length < 1 ? albumAction : null}
+                </div>
+        
+                <div className='album-wrapper'>
+                    {allPhotoDates && !albumName ? 
+                    allPhotoDates.map(date => {
+                        return (
+                            <div key={date}>
+                            <h3>{date}</h3>
+                            <AlbumImageList 
+                                allPhotos={allPhotos}
+                                date={date}
+                                getImageDateTime={getImageDateTime}
+                                handleModalOpen={handleModalOpen}
+                                addImageToSelection={addImageToSelection}
+                                removeImageFromSelection={removeImageFromSelection}
+                                clearSelection={clearSelection}
+                                />
+                            </div>
+                        )})
+                    :                         
+                    <AlbumImageList 
+                        allPhotos={allPhotos}
+                        getImageDateTime={getImageDateTime}
+                        handleModalOpen={handleModalOpen}
+                        addImageToSelection={addImageToSelection}
+                        removeImageFromSelection={removeImageFromSelection}
+                        clearSelection={clearSelection}
+                    />}
+                </div>
+        
+                <Modal open={modalOpen} onClose={handleModalClose}>
+                    <>
+                    <AlbumLightbox 
+                    image={selectedImage} 
+                    handleImageChange={handleImageChange}
+                    handleForceParentRerender={refetchImages}
+                    handleCloseModal={handleModalClose}
+                    />
+                    </>
+                </Modal>
+            </div>
+        )
+        
+    }
+
+
 }
 
 export default ImageAlbum

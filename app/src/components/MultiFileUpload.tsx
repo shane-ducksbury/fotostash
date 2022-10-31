@@ -17,7 +17,8 @@ export interface UploadableFile {
 const MultiFileUpload = () => {
     const onDrop = useCallback((accFiles: File[], rejFiles: FileRejection[]) => {
         const mappedAcc = accFiles.map(file => ({file, errors: []}));
-        setFiles(curr => [...curr, ...mappedAcc, ...rejFiles])
+        setFiles(curr => [...curr, ...mappedAcc, ...rejFiles]);
+        setFileDragOver(false);
     }, [])
 
     const [files, setFiles] = useState<UploadableFile[]>([]);
@@ -52,20 +53,21 @@ const MultiFileUpload = () => {
         }
     }
 
-    useEffect(() => {
-        const handleSubmit = async () => {
-            if(files.length > 0){
-                setFilesLength(files.length);
-                files.forEach(async (fileWrapper, index) => {
-                    setCurrentIndex(index);
-                    const res = await handleFileSubmit(fileWrapper.file);
-                    if(res.status === 500){
-                        setErroredFiles([...erroredFiles, fileWrapper.file.name]);
-                    }
-                })
-                setFiles([]);
-            }
+    const handleSubmit = async () => {
+        if(files.length > 0){
+            setFilesLength(files.length);
+            files.forEach(async (fileWrapper, index) => {
+                setCurrentIndex(index);
+                const res = await handleFileSubmit(fileWrapper.file);
+                if(res.status === 500){
+                    setErroredFiles([...erroredFiles, fileWrapper.file.name]);
+                }
+            })
+            setFiles([]);
         }
+    }
+
+    useEffect(() => {
         if(files.length > 0){
             handleSubmit();
         }

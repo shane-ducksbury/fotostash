@@ -1,6 +1,6 @@
 import React from 'react'
 import ImageAlbum from '../components/ImageAlbum'
-import { useQuery } from 'react-query'
+import { useQuery, useQueryClient } from 'react-query'
 import axios from 'axios'
 import Loading from './Loading'
 import { Navigate } from 'react-router-dom'
@@ -18,10 +18,12 @@ const AllPhotos = (props: Props) => {
         return res.data;
     }
 
-    const { data, status, refetch } = useQuery('allPhotos', getAllPhotos, {refetchOnWindowFocus: true})
+    const { data, status, refetch } = useQuery('allPhotos', getAllPhotos, {refetchOnMount: "always", refetchOnWindowFocus: true})
+    
+    const queryClient = useQueryClient()
 
     const refetchData = () => {
-        refetch();
+        queryClient.invalidateQueries('allPhotos');
     }
 
     if(status === 'success') {

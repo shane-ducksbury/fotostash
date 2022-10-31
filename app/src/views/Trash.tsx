@@ -1,12 +1,9 @@
-import { Button } from '@mui/material'
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useQuery } from 'react-query'
-import AlbumImagePreview from '../components/AlbumImagePreview'
 import EmptyTrashButton from '../components/EmptyTrashButton'
 import ImageAlbum from '../components/ImageAlbum'
 import SessionTimeout from '../components/SessionTimeout'
-import Image from '../interfaces/Image'
 import Loading from './Loading'
 
 type Props = {}
@@ -28,7 +25,6 @@ const Trash = (props: Props) => {
     }
 
     if(status === 'success') {
-        console.log(data)
         if(data.length > 0){
             return (
                     <ImageAlbum imageAlbum={data} refetch={refetchData} albumName={'Trash'} albumAction={<EmptyTrashButton />} />

@@ -1,6 +1,7 @@
 import { Button } from "@mui/material";
 import axios from "axios";
-import { useQuery } from "react-query";
+import { useEffect } from "react";
+import { useQuery, useQueryClient } from "react-query";
 import { useParams } from "react-router-dom";
 import ImageAlbum from "../components/ImageAlbum";
 import SessionTimeout from "../components/SessionTimeout";
@@ -18,10 +19,12 @@ const SingleAlbum = () => {
         return res.data
     }
 
-    const { data, status, refetch } = useQuery('albumImages', getAlbumImages, {refetchOnMount: true, refetchOnWindowFocus: true});
+    const { data, status, refetch } = useQuery(['albumImages', albumId], getAlbumImages, {refetchOnMount: "always", refetchOnWindowFocus: true});
+
+    const queryClient = useQueryClient()
 
     const refetchData = () => {
-        refetch();
+        queryClient.invalidateQueries(['albumImages', albumId]);
     }
 
     if(status === 'success') {

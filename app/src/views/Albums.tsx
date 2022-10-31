@@ -1,7 +1,7 @@
 import { Button } from "@mui/material"
 import axios from "axios"
 import { useEffect, useState } from "react"
-import { useQuery } from "react-query"
+import { useQuery, useQueryClient } from "react-query"
 import { Link } from "react-router-dom"
 import AlbumPreview from "../components/AlbumPreview"
 import CreateNewAlbumButton from "../components/CreateNewAlbumButton"
@@ -27,6 +27,11 @@ const Albums = (props: Props) => {
     }
 
     const { data, status } = useQuery('albums', getAlbums, {onSuccess: setAlbums, refetchOnMount: true});
+    const queryClient = useQueryClient();
+
+    useEffect(() => {
+        queryClient.invalidateQueries('albums');
+    },[])
 
     // useEffect(() => {
     //     if(staleAlbums) {
@@ -49,7 +54,7 @@ const Albums = (props: Props) => {
                 <section className='albums-container'>
                 {albums.length > 0 ? albums.map(album => {
                     return(
-                        <div>
+                        <div className="album-preview-wrapper">
                             <AlbumPreview albumId={album.id} />
                             <Link key={album.id} to={`/albums/${album.id}`}>{album.name}</Link>
                         </div>

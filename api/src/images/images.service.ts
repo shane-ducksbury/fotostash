@@ -123,7 +123,7 @@ export class ImagesService {
                 name: file.originalname,
                 // Theres a bit of dodgy stuff going on in here, but I'm out of time. 
                 // Will fix env for dev and prod later
-                imageUrl: process.env.MINIO_PORT ? "http://" : 'https://' + fileUrl,
+                imageUrl: process.env.MINIO_PORT ? "http://" + fileUrl : 'https://' + fileUrl,
                 dateTime: newImageInfo.dateTime,
                 deleted: false,
                 imageOwnerId: userId,

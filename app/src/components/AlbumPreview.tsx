@@ -1,4 +1,4 @@
-import { CircularProgress, Skeleton } from '@mui/material';
+import { CircularProgress } from '@mui/material';
 import axios from 'axios';
 import React from 'react'
 import { useQuery } from 'react-query';
@@ -21,20 +21,25 @@ const AlbumPreview = ({albumId}: Props) => {
     const { data, status } = useQuery(`${albumId}-preview`, getAlbumImages, {refetchOnWindowFocus: true})
 
     const getPreviewImage = (images: Image[]) => {
-        if(images.length < 1) return <p>Add Some Images to This Album</p>
-        if(images.length >= 1 && images.length < 4){
+        if(images.length < 1) return(
+                <div className='album-preview-empty'>
+                    <h3>Add Some Images to This Album</h3>
+                </div>
+            ) 
+        if(images.length >= 1){
             return(<img src={`${data.images[0].imageUrl}`} alt="" className='album-preview-single' />)
         }
-        if(images.length >= 4){
-            return(
-                <div className='album-preview-tile-wrapper'>
-                    <img src={`${data.images[0].imageUrl}`} alt="" className='album-preview-tiled' />
-                    <img src={`${data.images[1].imageUrl}`} alt="" className='album-preview-tiled' />
-                    <img src={`${data.images[2].imageUrl}`} alt="" className='album-preview-tiled' />
-                    <img src={`${data.images[3].imageUrl}`} alt="" className='album-preview-tiled' />
-                </div>
-            )
-        }
+        // Will reimplement this when I have more time
+        // if(images.length >= 4){
+        //     return(
+        //         <div className='album-preview-tile-wrapper'>
+        //             <img src={`${data.images[0].imageUrl}`} alt="" className='album-preview-tiled' />
+        //             <img src={`${data.images[1].imageUrl}`} alt="" className='album-preview-tiled' />
+        //             <img src={`${data.images[2].imageUrl}`} alt="" className='album-preview-tiled' />
+        //             <img src={`${data.images[3].imageUrl}`} alt="" className='album-preview-tiled' />
+        //         </div>
+        //     )
+        // }
     }
 
     return (
