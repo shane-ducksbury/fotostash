@@ -23,7 +23,8 @@ const MultiFileUpload = () => {
     const [files, setFiles] = useState<UploadableFile[]>([]);
     const [erroredFiles, setErroredFiles] = useState<string[]>([]);
     const [progress, setProgress] = useState<number>(0);
-    const { getRootProps, getInputProps } = useDropzone({ onDrop, noClick: true });
+    // const { getRootProps, getInputProps } = useDropzone({ onDrop, noClick: true });
+    const { getRootProps, getInputProps } = useDropzone({ onDrop });
     const [currentIndex, setCurrentIndex] = useState<number>(0);
     const [filesLength, setFilesLength] = useState<number>(0);
 
