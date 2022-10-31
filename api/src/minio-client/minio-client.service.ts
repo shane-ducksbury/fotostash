@@ -29,7 +29,7 @@ export class MinioClientService {
         
 
         try{
-          this.client.putObject(
+          await this.client.putObject(
               bucketName,
               fileName,
               file.buffer,
@@ -44,7 +44,9 @@ export class MinioClientService {
                 }
               },
             );
-            return `${process.env.MINIO_ENDPOINT}:${process.env.MINIO_PORT}/${process.env.MINIO_BUCKET_NAME}/${fileName}`;
+            // return `${process.env.MINIO_ENDPOINT}:${process.env.MINIO_PORT}/${process.env.MINIO_BUCKET_NAME}/${fileName}`;
+            return `${process.env.MINIO_ENDPOINT}${process.env.MINIO_PORT ? `:${process.env.MINIO_PORT}` : ''}/${process.env.MINIO_BUCKET_NAME}/${fileName}`;
+
         } catch (err){
           console.log(err)
         }
