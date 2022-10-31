@@ -3,6 +3,8 @@ import { useCallback, useEffect, useState } from "react";
 import { useDropzone, FileError, FileRejection } from "react-dropzone";
 import UploadProgressBar from "./UploadProgressBar";
 
+const { REACT_APP_API_URL } = process.env
+const API_URL = REACT_APP_API_URL
 
 export interface UploadableFile {
     file: File;
@@ -33,7 +35,7 @@ const MultiFileUpload = () => {
         formData.append("file", file);
     
         try {
-            const response = await axios.post("http://localhost:5050/images/upload", formData, {
+            const response = await axios.post(`${API_URL}/images/upload`, formData, {
               headers: {
                 "Content-Type": "multipart/form-data"
               },
