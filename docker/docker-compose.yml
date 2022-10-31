@@ -14,9 +14,6 @@ services:
     ports:
       - "9000:9000"
       - "9001:9001"
-    depends_on:
-      - minio1
-      - minio2
     command: server --console-address ":9001" /data
   
   createbuckets:
